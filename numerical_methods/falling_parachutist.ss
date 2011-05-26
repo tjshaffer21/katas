@@ -17,5 +17,16 @@
 ; t_i       = initial time        : (if v(0) then t_i = 0)
 ; step_size = t_i+1
 ;
-(define (calc_v v mass t_i step_size)
-    (+ v (* (- g (* (/ c mass) v)) (- step_size t_i))))
+;(define (calc_v v mass t_i step_size)
+;    (+ v (* (- g (* (/ c mass) v)) (- step_size t_i))))
+(define (calc v mass t_i step_size n)
+  (define (eulers_method v mass t_i t_i1) 
+    (+ v
+       (* (- g (* (/ c mass) v))
+       (- t_i1 t_i))))
+ 
+  (if (= n 1) ; v(0) = 0.0
+      (eulers_method v mass t_i (+ t_i step_size)) 
+      (calc 
+          (eulers_method v mass t_i (+ t_i step_size))
+          mass (+ t_i step_size) step_size (- n 1))))
