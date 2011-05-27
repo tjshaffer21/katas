@@ -10,10 +10,13 @@
 
 $drag    = 12.5
 $g       = 9.8
-$max_rep = 5
 
 def calc(v,mass,t,t1)
    return v + (($g - (($drag/mass) * v)) * (t1 - t))
+end
+
+def terminal_velocity(mass)
+    return (mass * $g)/$drag
 end
 
 # v(t) mass t step_size n
@@ -25,7 +28,7 @@ def main
     n         = ARGV[4].to_i
     t1        = t + step_size
 
-    rep_count = 0;
+    ter_v = terminal_velocity mass
 
     print "\nv(t):\t",v,"\n"
     print "mass:\t",mass,"\n"
@@ -36,16 +39,11 @@ def main
     for i in 0...n
         v1 = calc(v,mass,t,t1)
 
-        if (v1 - v).abs < 0.01
-            rep_count += 1
-        end
-        
         v = v1
         t = t1
         t1 = t + step_size
-       
 
-        if rep_count >= $max_rep
+        if (v - ter_v).abs < 0.001
             puts "Inf:\t\t\t%0.03f" % v
             break
         else

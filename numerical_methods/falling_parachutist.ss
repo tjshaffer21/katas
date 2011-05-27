@@ -10,6 +10,8 @@
 (define c 12.5)
 (define g 9.8)
 
+(define (terminal_velocity mass) ((\ (* mass g) c)))
+
 ;
 ; What is the name of the equation?
 ; v         = v(t_i)              : v(0) = 0
@@ -17,8 +19,6 @@
 ; t_i       = initial time        : (if v(0) then t_i = 0)
 ; step_size = t_i+1
 ;
-;(define (calc_v v mass t_i step_size)
-;    (+ v (* (- g (* (/ c mass) v)) (- step_size t_i))))
 (define (calc v mass t_i step_size n)
   (define (eulers_method v mass t_i t_i1) 
     (+ v
