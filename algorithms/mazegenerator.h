@@ -10,6 +10,8 @@
 #include <ncurses.h>
 #include <unistd.h>
 
+#define NUM_OF_NEIGHBORS 4
+
 /******************************************************************************
  *  A cell is an object with 4 walls.                                         *
  *  If the wall bits (top,right,bottom,left) are set then a wall exists in    *
@@ -82,12 +84,12 @@ cell* remove_cell_from_array(cell**, int, int);
  
 /******************************************************************************
  *  Get the neighbors of the current cell.                                    *
- *  @param cell** map           - The map that is being generated.            *
+ *  @param cell** maze                                                        *
  *  @param cell** neighbors     - Array of pointers to store neighbors        *
  *  @param int cell_x           - Current x                                   *
  *  @param int cell_y           - Current y                                   *
- *  @param int rows             - Total number of rows                        *
- *  @param int cols             - Total number of columns                     *
+ *  @param int rows                                                           *
+ *  @param int cols                                                           *
  *  @param int num_neighbors    - Total number of neighbors                   *
  *                                                                            *
  *  @note Neighbors are stored in neighbors array.                            *
@@ -107,11 +109,11 @@ int get_neighbors(cell**, cell**, int, int, int, int,int);
 int get_wall_value(cell*, cell*);
  
 /******************************************************************************
- *  @param cell** map - 2d array of cell structs                              *
+ *  @param cell** maze                                                        *
  *  @param int cell_x - The current x position                                *
  *  @param int cell_y - The current y position                                *
- *  @param int rows   - Total rows                                            *
- *  @param int cols   - Total columns                                         *
+ *  @param int rows                                                           *
+ *  @param int cols                                                           *
  *  Algorithm:                                                                *
  *      1. Start at a particular cell and call it the "exit."                 *
  *      2. Mark the current cell as visited, and get a list of its neighbors. *
@@ -123,10 +125,10 @@ int get_wall_value(cell*, cell*);
  void depth_first_search(cell**, int, int, int, int);
 
 /******************************************************************************
- *  Initialize map and begin generation algorithm.                            *
- *  @param int rows - Number of rows                                          *
- *  @param int cols - Number of columns                                       *
- *  @return cell**  = The generated maze                                      *
+ *  Initialize maze and begin generation algorithm.                           *
+ *  @param int rows                                                           *
+ *  @param int cols                                                           *
+ *  @return cell**  - The generated maze                                      *
  *****************************************************************************/
-cell** generate_map(int, int);
+cell** generate_maze(int, int);
 

@@ -15,6 +15,11 @@ cell* remove_cell_from_array(cell** array, int position, int length) {
     int i = 0;
     
     cell* rcell = array[position];
+    
+    if(rcell == NULL) {
+        return NULL;
+    }
+    
     rcell->ref--;
     array[position] = 0x0;
     
@@ -28,31 +33,31 @@ cell* remove_cell_from_array(cell** array, int position, int length) {
     return rcell;
 }
 
-int get_neighbors(cell** map, cell** neighbors, int cell_x, int cell_y, 
+int get_neighbors(cell** maze, cell** neighbors, int cell_x, int cell_y, 
   int rows, int cols, int num_neighbors) {
     int c = 0;
     
     if(cell_y > 0) {            // Top
-        neighbors[c] = &map[cell_y-1][cell_x];
-        map[cell_y-1][cell_x].ref++;
+        neighbors[c] = &maze[cell_y-1][cell_x];
+        maze[cell_y-1][cell_x].ref++;
         c++;
     }
     
     if(cell_x < (cols-1)) {     // Right
-        neighbors[c] = &map[cell_y][cell_x+1];
-        map[cell_y][cell_x+1].ref++;
+        neighbors[c] = &maze[cell_y][cell_x+1];
+        maze[cell_y][cell_x+1].ref++;
         c++;
     }
     
     if(cell_y < (rows-1)) {     // Bottom
-        neighbors[c] = &map[cell_y+1][cell_x];
-        map[cell_y+1][cell_x].ref++;
+        neighbors[c] = &maze[cell_y+1][cell_x];
+        maze[cell_y+1][cell_x].ref++;
         c++;
     }
     
     if(cell_x > 0) {            // Left
-        neighbors[c] = &map[cell_y][cell_x-1];
-        map[cell_y][cell_x-1].ref++;
+        neighbors[c] = &maze[cell_y][cell_x-1];
+        maze[cell_y][cell_x-1].ref++;
         c++;
     }
     
@@ -84,96 +89,87 @@ int get_wall_value(cell* current, cell* neighbor) {
     return value;
 }
 
-void depth_first_search(cell** map, int cell_x, int cell_y, int rows, int cols) {
-    int i = 0;
-    int NUM_OF_NEIGHBORS        = 4;
-    map[cell_y][cell_x].visited = 1;
+void depth_first_search(cell** maze, int cell_x, int cell_y, int rows, int cols) {
+    int i                        = 0;
+    maze[cell_y][cell_x].visited = 1;
 
     cell** neighbors = (cell **) malloc(NUM_OF_NEIGHBORS * sizeof(cell *));
     
-    int num_neighbors = get_neighbors(map, neighbors, cell_x, cell_y, rows, 
+    int num_neighbors = get_neighbors(maze, neighbors, cell_x, cell_y, rows, 
       cols, NUM_OF_NEIGHBORS);
     
     int pick;
-    while(num_neighbors >0) {
-        pick        = rand() % num_neighbors;
+    while(num_neighbors > 0) {
+        pick            = rand() % num_neighbors;
         cell* neighbor  = remove_cell_from_array(neighbors, pick, num_neighbors);
         num_neighbors--;
             
-        drawx = (cell_x*2);
+        drawx = (cell_x*2)+20;
         drawy = (cell_y*2);
         print_path(drawx,drawy);
         //sleep(1); 
         if(neighbor->visited == 0) {   // Not been visited
-            int wall_value = get_wall_value(&map[cell_y][cell_x], neighbor);
+            int wall_value = get_wall_value(&maze[cell_y][cell_x], neighbor);
 
             if(wall_value == 1) {           // Top
-                map[cell_y][cell_x].top = 0;
-                neighbor->bottom        = 0;
+                maze[cell_y][cell_x].top = 0;
+                neighbor->bottom         = 0;
                 
                 print_path(drawx,drawy-1);
-            } else if( wall_value == 2) {   // Right
-                map[cell_y][cell_x].right = 0;
-                neighbor->left            = 0;
+            } else if(wall_value == 2) {   // Right
+                maze[cell_y][cell_x].right = 0;
+                neighbor->left             = 0;
                 
                 print_path(drawx+1, drawy);
             } else if(wall_value == 3) {  // Bottom
-                map[cell_y][cell_x].bottom = 0;
-                neighbor->top              = 0;
+                maze[cell_y][cell_x].bottom = 0;
+                neighbor->top               = 0;
             
                 print_path(drawx, drawy+1);
             } else if(wall_value == 4) {    // Left
-                map[cell_y][cell_x].left = 0;
-                neighbor->right          = 0;
+                maze[cell_y][cell_x].left = 0;
+                neighbor->right           = 0;
                 
                 print_path(drawx-1,drawy);
             }
 
             find_new_draw_coords(cell_x,cell_y, neighbor->x, neighbor->y);
-            depth_first_search(map, neighbor->x, neighbor->y, rows, cols);            
+            depth_first_search(maze, neighbor->x, neighbor->y, rows, cols);            
         }
     } while (num_neighbors > 0);
 }
 
-
-cell** generate_map(int rows, int cols) {
+cell** generate_maze(int rows, int cols) {
     int i = 0;
     int j = 0;
     
-    cell** map = (cell **) malloc(rows * sizeof(cell *));
+    cell** maze = (cell **) malloc(rows * sizeof(cell *));
     
-    if(map == NULL) {
+    if(maze == NULL) {
         return NULL;
     } else {
         for(i = 0; i < rows; i++) {
-            map[i] = (cell *) malloc(cols * sizeof(cell));
+            maze[i] = (cell *) malloc(cols * sizeof(cell));
         }
         
         for(i = 0; i < rows; i++) {
             for(j = 0; j < cols; j++) {
-                map[i][j].top       = 1;
-                map[i][j].right     = 1;
-                map[i][j].bottom    = 1;
-                map[i][j].left      = 1;
-                map[i][j].visited   = 0;
-                map[i][j].y         = i;
-                map[i][j].x         = j;
-                map[i][j].ref       = 1;
+                maze[i][j].top       = 1;
+                maze[i][j].right     = 1;
+                maze[i][j].bottom    = 1;
+                maze[i][j].left      = 1;
+                maze[i][j].visited   = 0;
+                maze[i][j].y         = i;
+                maze[i][j].x         = j;
+                maze[i][j].ref       = 1;
             }
         }
     }
     
     int exit_row = rand() % (rows-1);
-    depth_first_search(map, cols-1, exit_row,rows,cols);
-    
-    return map;
-}
+    depth_first_search(maze, cols-1, exit_row,rows,cols);
 
-void print_path(int x, int y) {
-    attron(COLOR_PAIR(1));
-    mvaddstr(y,x," ");
-    attron(COLOR_PAIR(1));
-    refresh();
+    return maze;
 }
 
 void find_new_draw_coords(int cx,int cy, int nx, int ny) {
@@ -200,6 +196,14 @@ void setupncurses() {
     start_color();
     init_pair(1, COLOR_BLACK, COLOR_WHITE);
     init_pair(2, COLOR_WHITE, COLOR_BLACK);
+    init_pair(3, COLOR_RED, COLOR_BLACK);
+}
+
+void print_path(int x, int y) {
+    attron(COLOR_PAIR(1));
+    mvaddstr(y,x," ");
+    attron(COLOR_PAIR(1));
+    refresh();
 }
 
 void restorescreen() {
@@ -224,7 +228,7 @@ int main(int argc, char* argv[]) {
 
     setupncurses();
 
-    cell** map = generate_map(rows,cols);
+    cell** maze = generate_maze(rows,cols);
 
     getch();
     restorescreen();
