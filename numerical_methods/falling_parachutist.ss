@@ -29,4 +29,4 @@
       (eulers_method v mass t_i (+ t_i step_size)) 
       (calc 
           (eulers_method v mass t_i (+ t_i step_size))
-          mass (+ t_i step_size) step_size (- n 1))))
+          mass (+ t_i step_size) step_size (dec 1))))
