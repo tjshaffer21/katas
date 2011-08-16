@@ -52,7 +52,7 @@
 long cross_off_list(long* list, long length, long start, long num) {
     long i = 0;
     long j = 0;
-    for(i = start+1; i < length; i++) {
+    for(i = start; i < length; i++) {
         if(list[i] % num == 0) {
             list[i] = -1;
             j++;
@@ -113,11 +113,30 @@ void shift_list(long* list, long length) {
     }
 }
 
+/******************************************************************************
+ *  Find the position of a given value in the array.                          *
+ *  @param long* list                                                         *
+ *  @param long length                                                        *
+ *  @param long value                                                        *
+ *  @return long - The position of the value if found, else -1.               *
+ *****************************************************************************/
+long find_position(long* list, long length, long value) {
+    long i = 0;
+    for(i = 0; i < length; i++) {
+        if(list[i] == value) {
+            return i;
+        }
+    }
+
+    return -1;
+}
+
 int main(int argc, char* argv[]) {
     long maximum, size;
     long stop,i,j;
     long num_removed;
     long* list;
+    long value, pos;
 
     if(argc == 2) {
         maximum = atol(argv[1]);    // Upper bound
@@ -133,17 +152,27 @@ int main(int argc, char* argv[]) {
         i = 0;
         stop = floor(sqrt(maximum));
         while(i <= stop) {
-            num_removed = cross_off_list(list, size, i, (i+2));
-            shift_list(list, size);
-            size -= num_removed;
+            value = i+2;
+            
+            // Start at square(x)
+            pos   = find_position(list,size,pow(value,2));
+            
+            if(pos > -1) {
+                num_removed = cross_off_list(list, size, pos, value);
 
-            list = create_new_list(list,size);           
+                shift_list(list, size);
+                size -= num_removed;
+                list  = create_new_list(list,size);           
+            }
+
             i++;
         }
 
         // Final output
         print_list(list,size);
         printf("Count: %ld\n", size);
+
+        free((void *) list);
     }else {
         printf("./%s [maximum]\n",argv[1]);
     }
