@@ -38,6 +38,7 @@
  *****************************************************************************/
 #include <stdlib.h>
 #include <stdio.h>
+#include <string.h>
 #include <math.h>
 #include <assert.h>
 
@@ -76,14 +77,12 @@ void print_list(long *list, long length) {
 void shift_list(long* list, long length) {
     long i = 0;
     long j = 0;
-    long t = 0;
 
     while(i < length) {
         if(list[i] == -1) {
             for(j = i; j < length-1; j++) {
-                t         = list[j];
                 list[j]   = list[j+1];
-                list[j+1] = t;
+                list[j+1] = -1;
             }
         }
         i++;
@@ -94,6 +93,7 @@ void shift_list(long* list, long length) {
  *  Create a new list, copy all valid entries over.                          *
  *  @param long* list                                                        *
  *  @param long size                                                         *
+ *  @note assumes that list has already been shifted.                        *
  *  @note malloc on the new list.                                            *
  *  @note free on the old list.                                              *
  *  @return pointer to the new list.                                         *
@@ -144,27 +144,26 @@ long cross_off_list(long* list, long length, long start, long num) {
 long find_position(long* list, long length, long value) {
     long i = 0;
     for(i = 0; i < length; i++) {
-        if(list[i] == value) {
-            return i;
-        }
+        if(list[i] == value) { return i; }
     }
 
     return -1;
 }
 
 int main(int argc, char* argv[]) {
-    long maximum, size;
-    long stop,i,j;
+    long maximum;//, size;
+    long size;
+    long stop,i;
     long num_removed;
     long* list;
     long value, pos;
 
     if(argc == 2) {
         maximum = atol(argv[1]);    // Upper bound
-        size    = (maximum/2)+1;
-
+        size    = ceil(((double) maximum)/2.0);
+        
         list = fill_list(size);
-
+        
         // Run sieve algorithm.
         i = 0;
         stop = floor(sqrt(maximum));
@@ -193,3 +192,4 @@ int main(int argc, char* argv[]) {
     
     return 0;
 }
+
