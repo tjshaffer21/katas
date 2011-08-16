@@ -45,7 +45,7 @@
  *  Iterates through the list and crosses off (set to -1) multiples of x      *
  *  @param long* list                                                         *
  *  @param long length                                                        *
- *  @param long start - Where to start in the array (code adds 1).            *
+ *  @param long start - Where to start in the array.                          *
  *  @param long num   - Value of the current location (x).                    *
  *  @return long      - Number of values crossed off.                         *
  *****************************************************************************/
