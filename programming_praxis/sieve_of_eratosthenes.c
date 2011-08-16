@@ -42,24 +42,22 @@
 #include <assert.h>
 
 /******************************************************************************
- *  Iterates through the list and crosses off (set to -1) multiples of x      *
- *  @param long* list                                                         *
- *  @param long length                                                        *
- *  @param long start - Where to start in the array.                          *
- *  @param long num   - Value of the current location (x).                    *
- *  @return long      - Number of values crossed off.                         *
+ *  Fill the list from 2..size.                                               *
+ *  @note Only fills with odd values (limit = 30, size = (limit/2)+1          *
+ *  @param long size                                                          *
+ *  @return long* pointer to the list.                                        *
  *****************************************************************************/
-long cross_off_list(long* list, long length, long start, long num) {
+long* fill_list(long size) {
     long i = 0;
-    long j = 0;
-    for(i = start; i < length; i++) {
-        if(list[i] % num == 0) {
-            list[i] = -1;
-            j++;
-        }
+    long* list = (long *) malloc(size*sizeof(long));
+    assert(list != NULL);
+
+    list[0] = 2;
+    for(i = 1; i < size; i++) {
+        list[i] = (i*2)+1;
     }
 
-    return j;
+    return list;
 }
 
 void print_list(long *list, long length) {
@@ -68,27 +66,6 @@ void print_list(long *list, long length) {
         printf("%ld ", list[i]);
     }
     printf("\n");
-}
-
-/*****************************************************************************
- *  Create a new list, copy all valid entries over.                          *
- *  @param long* list                                                        *
- *  @param long size                                                         *
- *  @note malloc on the new list.                                            *
- *  @note free on the old list.                                              *
- *  @return pointer to the new list.                                         *
- ****************************************************************************/
-long* create_new_list(long* list, long size) {
-    long* new_list = (long *)malloc(size*sizeof(long));
-    long i         = 0;
-    for(i = 0; i < size; i++) {
-        if(list[i] == -1) { break; }
-        new_list[i] = list[i];
-    }
-    
-    free(list);
-
-    return new_list;
 }
 
 /******************************************************************************
@@ -111,6 +88,50 @@ void shift_list(long* list, long length) {
         }
         i++;
     }
+}
+
+/*****************************************************************************
+ *  Create a new list, copy all valid entries over.                          *
+ *  @param long* list                                                        *
+ *  @param long size                                                         *
+ *  @note malloc on the new list.                                            *
+ *  @note free on the old list.                                              *
+ *  @return pointer to the new list.                                         *
+ ****************************************************************************/
+long* create_new_list(long* list, long size) {
+    long* new_list = (long *)malloc(size*sizeof(long));
+    assert(new_list != NULL);
+
+    long i = 0;
+    for(i = 0; i < size; i++) {
+        if(list[i] == -1) { break; }
+        new_list[i] = list[i];
+    }
+    
+    free(list);
+
+    return new_list;
+}
+
+/******************************************************************************
+ *  Iterates through the list and crosses off (set to -1) multiples of x      *
+ *  @param long* list                                                         *
+ *  @param long length                                                        *
+ *  @param long start - Where to start in the array.                          *
+ *  @param long num   - Value of the current location (x).                    *
+ *  @return long      - Number of values crossed off.                         *
+ *****************************************************************************/
+long cross_off_list(long* list, long length, long start, long num) {
+    long i = 0;
+    long j = 0;
+    for(i = start; i < length; i++) {
+        if(list[i] % num == 0) {
+            list[i] = -1;
+            j++;
+        }
+    }
+
+    return j;
 }
 
 /******************************************************************************
@@ -140,36 +161,29 @@ int main(int argc, char* argv[]) {
 
     if(argc == 2) {
         maximum = atol(argv[1]);    // Upper bound
-        size    = maximum-1;        // Ignore 0,1
+        size    = (maximum/2)+1;
 
-        // Fill list
-        list = (long *) malloc(size*sizeof(long));
-        for(i = 0; i < size; i++) {
-            list[i] = i+2;
-        }
+        list = fill_list(size);
 
         // Run sieve algorithm.
         i = 0;
         stop = floor(sqrt(maximum));
-        while(i <= stop) {
-            value = i+2;
-            
+        while((i+2) <= stop) {
             // Start at square(x)
-            pos   = find_position(list,size,pow(value,2));
+            pos = find_position(list,size,pow(i+2,2));
             
             if(pos > -1) {
-                num_removed = cross_off_list(list, size, pos, value);
-
+                num_removed = cross_off_list(list, size, pos, i+2);
                 shift_list(list, size);
                 size -= num_removed;
-                list  = create_new_list(list,size);           
+                //list  = create_new_list(list,size);           
             }
 
             i++;
         }
 
         // Final output
-        print_list(list,size);
+        //print_list(list,size);
         printf("Count: %ld\n", size);
 
         free((void *) list);
