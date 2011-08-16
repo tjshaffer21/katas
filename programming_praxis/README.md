@@ -6,6 +6,7 @@ Implement an RPN calculator that takes an expression like 19 2.14 + 4.5 2 4.3 /
   with 85.2974. The program should read expressions from standard input and
   print the top of the stack to standard output when a newline is encountered.
   The program should retain the state of the operand stack between expressions.
+
 ---
 
 #__Sieve of Eratosthenes:__
@@ -61,4 +62,5 @@ Write a function that takes a single argument n and returns a list of prime
 numbers less than or equal to n using the optimized sieving algorithm described
 above. Apply the function to the argument 15485863 and count the number of
 primes returned.
+
 ---
