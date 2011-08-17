@@ -134,12 +134,7 @@ int main(int argc, char* argv[]) {
 
             preprocess_list(list, n);
             sieve(list, n);
- /* 
-            printf("2\n");
-            for(i = 3; i < n; i=i+2) {
-                if(list[i] == 1) { printf("%ld\n",i); }
-            }
-*/
+            
             count = 1;
             for(i = 3; i < n; i=i+2) {
                 if(list[i] == 1) { count++; }
