@@ -49,7 +49,7 @@
  *  @return long* pointer to the list.                                        *
  *****************************************************************************/
 long* fill_list(long size) {
-    long i = 0;
+    long i;
     long* list = (long *) malloc(size*sizeof(long));
     assert(list != NULL);
 
@@ -62,7 +62,7 @@ long* fill_list(long size) {
 }
 
 void print_list(long *list, long length) {
-    long i = 0;
+    long i;
     for(i = 0; i < length; i++) {
         printf("%ld ", list[i]);
     }
@@ -76,7 +76,7 @@ void print_list(long *list, long length) {
  *****************************************************************************/
 void shift_list(long* list, long length) {
     long i = 0;
-    long j = 0;
+    long j;
 
     while(i < length) {
         if(list[i] == -1) {
@@ -102,7 +102,7 @@ long* create_new_list(long* list, long size) {
     long* new_list = (long *)malloc(size*sizeof(long));
     assert(new_list != NULL);
 
-    long i = 0;
+    long i;
     for(i = 0; i < size; i++) {
         if(list[i] == -1) { break; }
         new_list[i] = list[i];
@@ -122,7 +122,7 @@ long* create_new_list(long* list, long size) {
  *  @return long      - Number of values crossed off.                         *
  *****************************************************************************/
 long cross_off_list(long* list, long length, long start, long num) {
-    long i = 0;
+    long i;
     long j = 0;
     for(i = start; i < length; i++) {
         if(list[i] % num == 0) {
@@ -142,7 +142,7 @@ long cross_off_list(long* list, long length, long start, long num) {
  *  @return long - The position of the value if found, else -1.               *
  *****************************************************************************/
 long find_position(long* list, long length, long value) {
-    long i = 0;
+    long i;
     for(i = 0; i < length; i++) {
         if(list[i] == value) { return i; }
     }
@@ -151,8 +151,7 @@ long find_position(long* list, long length, long value) {
 }
 
 int main(int argc, char* argv[]) {
-    long maximum;//, size;
-    long size;
+    long maximum, size;
     long stop,i;
     long num_removed;
     long* list;
@@ -187,7 +186,7 @@ int main(int argc, char* argv[]) {
 
         free((void *) list);
     }else {
-        printf("./%s [maximum]\n",argv[1]);
+        printf("%s [maximum]\n",argv[1]);
     }
     
     return 0;
