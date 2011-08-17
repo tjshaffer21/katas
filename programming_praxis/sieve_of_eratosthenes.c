@@ -1,30 +1,23 @@
 /******************************************************************************
- *  Sieve of Eratosthenes                                                     *
- *  16 August 2011                                                            *
+ *  @name Sieve of Eratosthenes                                               *
+ *  @updated 17 August 2011                                                   *
  *                                                                            *
  *  Algorithm:                                                                *
- *      1) Fill an array from 0..n set to TRUE (1).                           *
+ *      1) Array from 0..n, odd pos. set to TRUE, even pos. set to FALSE      *
+ *         except for 2.                                                      *
  *      2) Starting at the square(x), cross off all multiples.                *
  *      3) Stop at sqrt(n)                                                    *
  *                                                                            *
- *  Compared to previous version:                                             *
- *      - Uses a list of chars and does not resize.                           *
- *      - Fill list sets all evens, except 2, to 0 (prev. did not add evens)  *
- *      - Loop skips evens (known to not be prime)                            *
- *                                                                            *
- *  Write a function that takes a single argument n and returns a list of     *
- *  prime numbers less than or equal to n using the optimized sieve algorithm *
- *  described above. Apply the function to the argument 15485863 and count the*
- *  number of primes returned.                                                *
+ *  @see README for more details.                                             *
  *****************************************************************************/
 #include <stdlib.h>
 #include <stdio.h>
 #include <math.h>
 #include <assert.h>
 
-/******************************************************************************
- *  Fill the list from 2..size.                                               *
- *  @note Only fills with odd values (limit = 30, size = (limit/2)+1          *
+/******************************************************************************                                               *
+ *  @note Even is set to 0, Odds set to 1 (except 2)                          *
+ *  @note Calls malloc.                                                       *
  *  @param long size                                                          *
  *  @return char* pointer to the list.                                        *
  *****************************************************************************/
@@ -33,8 +26,8 @@ inline char* fill_list(long size) {
     char* list = (char *) malloc(size*sizeof(char));
     assert(list != NULL);
 
-    list[0] = 0;    // Ignore
-    list[1] = 0;    // Ignore
+    list[0] = 0;
+    list[1] = 0;
     list[2] = 1;
     for(i = 3; i < size; i++) {
         ((i % 2) == 0) ? (list[i] = 0) : (list[i] = 1);
@@ -56,7 +49,6 @@ inline void print_list(char *list, long length) {
 }
 
 /******************************************************************************
- *  Iterates through the list and crosses off (set to 0) multiples of x       *
  *  @param char* list                                                         *
  *  @param long length                                                        *
  *  @param long start - Where to start in the array.                          *
@@ -75,26 +67,27 @@ int main(int argc, char* argv[]) {
     long stop,i,pos;
     char* list;
 
-    if(argc == 2) {
-        maximum = atol(argv[1]);    // Upper bound
-        maximum++;
-        list = fill_list(maximum);
+    switch(argc) {
+        case 2:
+            maximum = atol(argv[1]);
+            maximum++;
+            list = fill_list(maximum);
         
-        i = 3;
-        stop = sqrt(maximum);
-        while(i <= stop) {
-            pos = i*i;
-            cross_off_list(list, maximum, pos, i);
-            i += 2;
-        }
+            i = 3;
+            stop = sqrt(maximum);
+            while(i <= stop) {
+                pos = i*i;
+                cross_off_list(list, maximum, pos, i);
+                i += 2;
+            }
 
-        print_list(list,maximum);
+            print_list(list,maximum);
 
-        free((void *) list);
-    }else {
-        printf("%s [maximum]\n",argv[1]);
+            free((void *) list);
+            break;
+        default:
+            printf("%s [maximum]\n",argv[1]);
     }
     
     return 0;
 }
-
