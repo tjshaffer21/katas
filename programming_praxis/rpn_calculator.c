@@ -46,52 +46,33 @@ short is_digit(char* str) {
 }
 
 void perform_operation(char* pch) {
-    double *r;
-    double *l;
+    double *r   = ((double *) pop(operand));
+    double *l   = ((double *) pop(operand));
     double *res = (double *) malloc(sizeof(res));
+            
     switch(pch[0]) {
         case '+':
-            r = ((double *) pop(operand));
-            l = ((double *) pop(operand));
             *res = *l + *r;
-            
-            free((void *) r);
-            free((void *) l);
             push(operand,(void *) res);
             break;
         case '-':
-            r = ((double *) pop(operand));
-            l = ((double *) pop(operand));
             *res = *l - *r;
-            
-            free((void *) r);
-            free((void *) l);
-            
             push(operand,(void *) res);
             break;
         case '*':
-            r = ((double *) pop(operand));
-            l = ((double *) pop(operand));
             *res = *l * *r;
-            
-            free((void *) r);
-            free((void *) l);
-            
             push(operand,(void *) res);
             break;
         case '/':
-            r = ((double *) pop(operand));
-            l = ((double *) pop(operand));
             *res = *l / *r;
-            
-            free((void *) r);
-            free((void *) l);
-            
             push(operand, (void *) res);
             break;
         default:
-            printf("N/A\n");
+            free((void *) res);
     }
+
+    free((void *) r);
+    free((void *) l);
 }
 
 void parse_input(char* input) {
@@ -115,13 +96,10 @@ int main(int argc, char* argv[]) {
 
     operand  = init_stack(operand);
     
-    if(argc > 1) {
-    } else {
-        printf("Enter expression: ");
-        fgets(buffer, sizeof(buffer),stdin);
+    printf("Enter expression: ");
+    fgets(buffer, sizeof(buffer),stdin);
 
-        parse_input(buffer);
-    }
+    parse_input(buffer);
 
     double *result = (double *) pop(operand);
     printf("= %.4f\n", *result);
