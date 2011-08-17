@@ -6,6 +6,7 @@
  *****************************************************************************/
 #include <stdlib.h>
 #include <stdio.h>
+#include <assert.h>
 #include <time.h>
 #include <ncurses.h>
 #include <unistd.h>
@@ -34,12 +35,12 @@ int drawy;  // Y-coordinate used for ncurses
 /******************************************************************************
  *  Initialize and set desired ncurse parameters.                             *
  *****************************************************************************/
-void setupncurses();
+inline void setupncurses();
 
 /******************************************************************************
  *  Properly exit ncurses session.                                            *
  *****************************************************************************/
-void restorescreen();
+inline void restorescreen();
 
 /******************************************************************************
  * Determine new drawing coordinates based on current and next coordinates.   *
@@ -57,7 +58,7 @@ void find_new_draw_coords(int,int,int,int);
  * @param int y - Y coordinate to write at.                                   *
  * @note Used to print during traversal.                                      *
  *****************************************************************************/
-void print_path(int,int);
+inline void print_path(int,int);
 
 /******************************************************************************
  *  Resize array to remove invalid entries (0x0)                              *
