@@ -6,7 +6,7 @@
 struct stack_struct {
     void* element;
     struct stack_struct* prev;
-    int size;
+    size_t size;
 };
 
 /******************************************************************************
@@ -24,9 +24,8 @@ struct stack_struct* init_stack();
 
 /******************************************************************************
  * @param void* - Pointer to element to be pushed onto stack.                 *
- * @return 1 if success, else 0                                               *
  *****************************************************************************/
-int push(struct stack_struct *stack, void*);
+void push(struct stack_struct *stack, void*);
 
 /******************************************************************************
  *  @return Pointer to first element, does not remove from stack.             *
@@ -38,6 +37,6 @@ void* peek(struct stack_struct *stack);
  *****************************************************************************/
 void* pop(struct stack_struct *stack);
 
-int get_size(struct stack_struct *stack);
+size_t get_size(struct stack_struct *stack);
 
 #endif

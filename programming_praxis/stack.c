@@ -23,7 +23,7 @@ void deinit_stack(struct stack_struct *stack) {
 //    free((void*) stack);
 }
 
-int push(struct stack_struct *stack, void* ele) {
+void push(struct stack_struct *stack, void* ele) {
     if(stack->size == 0) {
         stack->element = ele;
         stack->size    = 1;
@@ -41,8 +41,6 @@ int push(struct stack_struct *stack, void* ele) {
         stack->size++;
         stack->prev = s;
     }
-    
-    return 1;
 }
 
 void* peek(struct stack_struct *stack) {
@@ -72,5 +70,5 @@ void* pop(struct stack_struct *stack) {
     return element;
 }
 
-int get_size(struct stack_struct *stack) { return stack->size; }
+size_t get_size(struct stack_struct *stack) { return stack->size; }
 
