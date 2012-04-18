@@ -139,7 +139,7 @@ void depth_first_search(cell** maze, int cell_x, int cell_y, int rows, int cols)
             find_new_draw_coords(cell_x,cell_y, neighbor->x, neighbor->y);
             depth_first_search(maze, neighbor->x, neighbor->y, rows, cols);            
         }
-    } while (num_neighbors > 0);
+    }
     
     free((void *) neighbors);
 }
