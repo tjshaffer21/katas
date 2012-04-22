@@ -2,7 +2,6 @@ module Sorting (bubbleSort, mergeSort) where
 
 import System.Random
 import Data.List
-import Control.Parallel
 
 -- Bubble Sort
 bubbleSort :: (Ord a) => [a] -> [a]
@@ -26,7 +25,7 @@ bubbleSortWork (x:y:xs)
 mergeSort :: (Ord a) => [a] -> [a]
 mergeSort []     = error "List is empty"
 mergeSort (x:[]) = [x]
-mergeSort x      = s1 `par` s2 `pseq` (merge s1 s2)
+mergeSort x      = merge s1 s2
     where
         sList = splitAt (length x `div` 2) x
         s1    = mergeSort (fst sList)
@@ -49,9 +48,9 @@ merge (x:xs) (y:ys)
     | (length ys)+1 > 0 = let result = y:[] 
                           in result ++ merge (x:xs) ys
 
-{-main=do
+main=do
     let rs = [38,27,43,3,9,82,10,-6,0,-43,100]
     
     let sort = bubbleSort rs  
     --let sort = mergeSort rs
-    putStr $ unlines $ map show (sort)-}
+    putStr $ unlines $ map show (sort)
