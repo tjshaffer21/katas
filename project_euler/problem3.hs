@@ -29,7 +29,7 @@ trialDiv n
     | n < 1     = []
     | n == 1    = [1]
     | otherwise = 
-        let xs = trialDiv' (sieveE . ceiling $ ((fromIntegral n ** 0.5) + 1)) n
+        let xs = trialDiv' (sieveE . ceiling $ (fromIntegral n ** 0.5)) n
         in let ys = [x | x <- xs, x /= n] 
         in if length ys > 1 then ys else [1,n]
 
