@@ -13,13 +13,15 @@
  -
  - How many primes are there for a = 16! and b = 10!, and what is their sum?
  -
- - TODO Implement more efficent algorithm.
+ - TODO Improve Miller-Rabin
  -}
+import Prelude
 import System.Random
-import Control.Parallel
+--import Control.Parallel
 
 sieve :: Int -> Int -> [Int]
-sieve min max = [x | x <- [min..max], odd x, millerRabin x 1]
+sieve min max = [x | x <- [min..max], odd x, mod x 3 /= 0, mod x 5 /= 0, 
+                 mod x 7 /= 0,millerRabin x 1]
 
 -- Naive implementation
 naive :: [Int] -> [Int]
@@ -38,57 +40,69 @@ dropMult n (x:xs)
 -- Intput:  k, a parameter that determines the accuracy of the test.
 millerRabin :: Int -> Int -> Bool 
 millerRabin n k
-    | n < 0          = error "Invalid integer."
-    | n < 3 && n > 1 = True
-    | k > 0     = let a = head . head $ take 1 (rand (mkStdGen 100) 2 (n - 2))
-                      ds = findDS (n-1)
-                      d  = fst ds
-                      x :: Integer
-                      x  = mod ((fromIntegral a) ^ d) (fromIntegral n) 
-                  in if x == 1 || x == ((fromIntegral n) - 1) then
-                        millerRabin n (k - 1)
-                     else
-                        mrLoop (fromIntegral x) n k ((snd ds)-1)
+    | n < 1          = error "Invalid integer."
+    | n > 3 && k > 0 = let a  = (\mi ma -> head $! take ma 
+                                (randomRs (mi, ma) (mkStdGen 100))) 2 (n - 2)
+                           ds = findDS $! (n-1)
+                           ad = (fromIntegral a) ^ fst ds
+                           x :: Integer
+                           x  = mod ad (fromIntegral n)
+                        in if x == 1 || x == (fromIntegral $! (n - 1)) then
+                                millerRabin n $! (k - 1)
+                           else
+                                mrLoop (fromIntegral x) n k (snd ds) 1
     | otherwise = True
 
 -- x, a^d % n
 -- n, Test number
 -- k, Accuracy
 -- s, From 2^d * s
-mrLoop :: Int -> Int -> Int -> Int -> Bool
-mrLoop x n k s
-    | s > 0     = let xx = mod (x * x) n
+-- r, Inc. var
+mrLoop :: Int -> Int -> Int -> Int -> Int -> Bool
+mrLoop x n k s r
+    | r < s     = let xx = mod (x * x) n
                   in if xx == 1 then
                         False
                      else if xx == (n - 1) then
-                        millerRabin n (k - 1)
+                        millerRabin n $! (k - 1)
                      else
-                        mrLoop xx n k (s - 1)
+                        mrLoop xx n k s $! (r + 1)
     | otherwise = False
 
 -- Find values for (d,s)
 findDS :: Int -> (Int, Int)
 findDS d
-    | mod d 2 == 0 = let ds = findDS (div d 2) in (fst ds,(snd ds) + 1)
+    | mod d 2 == 0 = let ds = findDS $! (div d 2) in (fst ds, (snd ds) + 1)
     | otherwise    = (d, 0)
 
--- Produce random numbers [min,max]
-rand :: RandomGen a => a -> Int -> Int -> [[Int]]
-rand g min max = randomW (randomRs (min, max) g) max
-
-randomW :: [Int] -> Int -> [[Int]]
-randomW (r:rs) max = let (xs,ys) = splitAt max rs in xs : randomW ys max
-
+-- n!
 factorial :: Int -> Int
 factorial 1 = 1
 factorial n
-    | () `seq` n `seq` False = undefined
     | n < 1     = error "Invalid number."
-    | otherwise = n * factorial (n-1)
+    | otherwise = n * (factorial $! (n-1))
 
-main = do a `pseq` c `pseq` (s `pseq` putStrLn $ "There are " ++ 
+-- Calculate both sum and length at the same time.
+-- (x:xs),  List
+-- s,       Sum
+-- l,       Length
+-- return (sum, length)
+sumAndLength :: [Int] -> (Int, Int)
+sumAndLength []     = (0,0)
+sumAndLength (x:xs) = let r = sumAndLength xs
+                          in (fst r + x, snd r + 1)
+
+main = do putStrLn $ "There are " ++ (show $ snd s) ++ " primes between "++
+            (show a) ++ " and " ++ (show $ c) ++ " and the sum is " ++
+            (show $ fst s) 
+          where a = factorial 9--16
+                c = a + factorial 8 -- 8
+                s = sumAndLength $ sieve a c
+
+-- No profiling libraries for Control.Parallel
+{-do a `pseq` c `pseq` (s `pseq` putStrLn $ "There are " ++ 
             (show $ length s) ++ " primes between " ++ (show a) ++ " and " 
             ++ (show $ c) ++ " and the sum is " ++ (show $ sum s))
-          where a = factorial 9--factorial $! 16
-                c = a + factorial 8--factorial $! 10
-                s = sieve a (c)
+          where a = factorial 16
+                c = a + factorial 10
+                s = sieve a (c)-}
