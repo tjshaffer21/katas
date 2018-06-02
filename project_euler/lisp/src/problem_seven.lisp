@@ -19,6 +19,3 @@
           (return-from problem-seven
             (nth 10000 sieve)) ; 10001 prime
           (setf current (+ current 10000))))))
-
-(defun problem-seven-main ()
-  (format t "The 10001st prime number is ~S.~%" (problem-seven)))

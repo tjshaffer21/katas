@@ -10,15 +10,16 @@
 (in-package #:project-euler)
 
 (defun generate-list (value)
-  "Generate a list of integers from 1 to VALUE; where values that have multiples
- exiting in the list are removed.
- Example
-   (generate-list 20) := (11 12 13 14 15 16 17 18 19 20)
-   (generate-list 10) := (6 7 8 9 10)
- Args
-   VALUE - Integer max value.
- Return
-   A list of integers."
+  "Generate a list of integers from 1 to value; where values that have multiples
+   exiting in the list are removed.
+   
+   Example
+    (generate-list 20) := (11 12 13 14 15 16 17 18 19 20)
+    (generate-list 10) := (6 7 8 9 10)
+   Parameters
+    value : int : maximum value
+   Return
+    list"
   (declare (type integer value))
   
   (remove-if #'(lambda (x) (if
@@ -50,7 +51,3 @@
                (when (null flag) (return t))))
         (return i))
       (iterate::finally (return 0)))))
-
-(defun problem-five-main ()
-  (format t "The smallest positive number that is evenly divisble by all the / 
-numbers from 1 to 20 is ~S.~%" (problem-five)))

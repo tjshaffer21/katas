@@ -10,13 +10,13 @@
 (in-package #:project-euler)
 
 (defun multiples-below (numbers limit)
-  "Find multiples of NUMBERS below (exclusive) LIMIT.
- Args
-   NUMBERS - List of numbers to find multiples of.
-     LIMIT - The integer limit of the search (exclusive).
- Return
-   A list of integers.
-     The list is neither sorted nor removes duplicates."
+  "Find multiples below given numbers.
+ 
+   Parameters
+    numbers : list
+    limit : int : Exclusive limit for search criteria.
+   Return
+    list"
   (declare (type list numbers) (type integer limit))
   
   (unless (null numbers)
@@ -28,8 +28,3 @@
 
 (defun problem-one ()
   (apply #'+ (remove-duplicates (multiples-below (list 3 5) 1000))))
-
-(defun problem-one-main ()
-  "Print the solution for the problem."
-  (format t "The sum of all multiples of 3 or 5 below 1000 is ~S~%"
-          (problem-one)))

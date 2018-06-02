@@ -12,13 +12,14 @@
 (in-package #:project-euler)
 
 (defun fibonacci (term)
-  "Calculate the fibonacci number of the given TERM.
- Args
-   TERM - Interger value of the fibonacci number to calculate.
- Return
-   Integer.
- Error
-   If TERM < 0 then error is thrown."
+  "Calculate the fibonacci number of the given integer.
+ 
+   Parameters
+    term : int
+   Return
+    int
+   Error
+    Generic error if term < 0"
   (declare (type integer term))
   (cond ((< term 0) (error "Incorrect term."))
         ((= term 0) 0)
@@ -33,7 +34,3 @@
     (iterate::while (< fib 4000000))
     (when (evenp fib)
       (iterate::summing fib))))
-
-(defun problem-two-main()
-  (format t "The sum of the even-valued terms of the Fibonacci sequence, whose \
-values do not exceed four million is ~S" (problem-two)))

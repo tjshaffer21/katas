@@ -8,11 +8,12 @@
 (in-package #:project-euler)
 
 (defun prime-factors (value)
-  "Get the prime factors of the given VALUE.
- Args
-   VALUE - Integer of the prime factor to calculate.
- Return
-   A list of prime factors."
+  "Get the prime factors of the given integer.
+ 
+   Parameters
+    value : int
+   Return
+    list"
   (iterate:iter
     (iterate:with i = 2)
     (iterate:with v = value)
@@ -24,7 +25,3 @@
 
 (defun problem-three ()
   (reduce #'max (prime-factors 600851475143)))
-
-(defun problem-three-main ()
-  (format t "The largest prime factor of the number 600,851,475,143 is ~S.~%"
-          (problem-three)))

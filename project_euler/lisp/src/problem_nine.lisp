@@ -14,16 +14,16 @@
 
 (defun euclid-pythagorean-triple (m n k)
   "Generate a triplet using Euclid's formula.
- https://en.wikipedia.org/wiki/Pythagorean_triple#Generating_a_triple
+   https://en.wikipedia.org/wiki/Pythagorean_triple#Generating_a_triple
 
- Args
-   M - Non-negative Integer
-   N - Non-negative Integer
-   K - Non-negative Integer. K is the value used for creating multiples of
-       coprimes.
- Return
-   Multiple integer values (a, b, c)
-   nil if m <= n <= 0"
+   Parameters
+    m : int : Non-negative Integer
+    n : int : Non-negative Integer
+    k : int : Non-negative Integer. 
+              The value used for creating multiples of coprimes.
+   Return
+     Multiple integer values (a, b, c)
+     nil if m <= n <= 0"
   (declare (type integer m n k))
 
   (unless (and (> m n) (> n 0)) (return-from euclid-pythagorean-triple nil))
@@ -35,24 +35,26 @@
           (* k (+ (* m m) (* n n)))))
 
 (defun pythagorean-triplet-p (a b c)
-  "Validate if the numbers A, B, and C are a pythagorean triplet.
- Args
-   A - Non-negative Integer
-   B - Non-negative Integer
-   C - Non-negative Integer
- Return
-   t if a triplet; else nil."
+  "Validate if the numbers a, b, and c are a pythagorean triplet.
+ 
+   Parameters
+    a : int : Non-negative Integer
+    b : int : Non-negative Integer
+    c : int : Non-negative Integer
+   Return
+    t if a triplet; else nil."
   (declare (type integer a b c))
   
   (if (= (+ (* a a) (* b b)) (* c c)) t nil))
 
 (defun generate-coprimes (max)
-  "Generate all coprime pairs up to MAX.
- Args
-   MAX - Integer. Limit of generation.
- Return
-   Sequence of integers.
-   nil if max <= 0"
+  "Generate all coprime pairs up to max.
+ 
+   Parameters
+    max : int : Limit of generation.
+   Return
+    Sequence of integers.
+    nil if max <= 0"
   (declare (type integer max))
   (when (<= max 0) (return-from generate-coprimes nil))
 
@@ -80,6 +82,3 @@
                                                                 k)
           (when (pythagorean-triplet-p a b c)
             (if (= (+ a b c) 1000) (return-from problem-nine (* a b c)))))))))
-
-(defun problem-nine-main ()
-  (format t "The product abc is ~S.~%" (problem-nine)))

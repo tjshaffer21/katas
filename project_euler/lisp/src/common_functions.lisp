@@ -3,27 +3,27 @@
 (in-package #:project-euler)
 
 (defun digits (number)
-  "Calculate the number of digits in a NUMBER.
- Assumption
-   Base 10
- Args
-   NUMBER - Non-negative integer.
- Return
-   Integer"
+  "Calculate the number of digits in a number.
+  
+   Assumption
+    Base 10
+   Parameters
+    number : int : Non-negative, non-zero integer.
+   Return
+    int"
   (declare (type integer number))
-
-  (floor (1+ (log number 10))))
+  (if (= number 0) 1 (floor (1+ (log number 10)))))
 
 (defun greatest-common-divisor (a b &optional (method :binary))
-  "Find the gcd of integers A and B.
- Args
-   A - Non-negative integer
-   B - Non-negative integer
-   METHOD - Keyword of which gcd method to use.
-     :binary
- Return
-   nil if inputs are invalid;
-   else an integer."
+  "Find the gcd of integers a and b.
+  
+   Parameters
+    a : int : Non-negative integer
+    b : int : Non-negative integer
+    method : keyword 
+             :binary
+   Return
+    int; else nil if inputs are invalid."
   (declare (type integer a b) (type keyword method))
 
   (when (or (<= a 0) (<= b 0)) (return-from greatest-common-divisor nil))
@@ -32,49 +32,50 @@
     (:binary (gcd-binary a b))))
 
 (defun gcd-binary (a b)
-  "Calculate the gcd of integers A and B using binary method.
- Args
-   A - Non-negative integer
-   B - Non-negative integer
- Return
-   nil if inputs are invalid;
-   else integer."
+  "Calculate the gcd of integers a and n using binary method.
+  
+   Parameters
+    a : int : Non-negative integer
+    b : int : Non-negative integer
+   Return
+    int; else nil if inputs are invalid."
   (declare (type integer a b))
 
   (when (or (<= a 0) (<= b 0)) (return-from gcd-binary nil))
 
-  (let ((d 0))
-    (iterate:iter
-      (iterate:while (and (evenp a) (evenp b)))
-      (setf a (/ a 2))
-      (setf b (/ b 2))
-      (incf d))
-
-    (iterate:iter
-      (iterate:while (/= a b))
-      (cond ((evenp a) (setf a (/ a 2)))
-            ((evenp b) (setf b (/ b 2)))
-            ((> a b) (setf a (/ (- a b) 2)))
-            (t (setf b (/ (- b a) 2)))))
-    (* (expt 2 d))))
+  (let* ((an a) (bn b)
+         (d (iterate:iter
+                (iterate:with i = 0)
+                (iterate:while (and (evenp an) (evenp bn)))
+                (setf an (ash an -1))
+                (setf bn (ash bn -1))
+                (incf i)
+                (iterate:finally (return i)))))
+        (iterate:iter
+            (iterate:while (not (eq an bn)))
+            (cond ((evenp an) (setf an (ash an -1)))
+                  ((evenp bn) (setf bn (ash bn -1)))
+                  ((> an bn) (setf an (ash (- an bn) -1)))
+                  (t (setf bn (ash (- bn an) -1)))))
+        (* an (expt 2 d))))
 
 (defun integer-at (value index)
-  "Get the integer from VALUE at INDEX.
+  "Get the integer from value at the given index.
 
- Assumption
-   Base 10.
- Note
-   Index is 1-based and right to left.
- Example
-   (integer-at 1234 1) := 4
-   (integer-at 1234 4) := 1
- Args
-   VALUE - Non-negative Integer
-   INDEX - Integer - Search position
- Return
-   If INDEX is incorrect or VALUE is negative then return nil.
-   Else, the first result is the integer at INDEX while the second value is the
-   remaining numbers as a ratio."
+   Assumption
+    Base 10.
+   Note
+    Index is 1-based and right to left.
+   Example
+    (integer-at 1234 1) := 4
+    (integer-at 1234 4) := 1
+   Parameters
+    value : int : Non-negative Integer
+    index : int : Search position
+   Return
+    (int at index, remainder ratio)
+    nil : Index is incorrect 
+          Value is negative"
   (declare (type integer value index))
 
   (when (or
@@ -86,13 +87,13 @@
   (floor (mod (/ value (expt 10 (1- index))) 10)))
 
 (defun multiples (number limit)
-  "Get the multiples of the GIVEN number up to, and including, LIMIT.
- Args
-   NUMBER - Integer. Number to get the multiples of.
-   LIMIT  - Integer. Max number.
- Return
-   List of integers.
-   nil if number <= 0."
+  "Get the multiples of the given number up to, and including, limit.
+  
+   Parameters
+    number : int
+    limit  : int 
+   Return
+    list; nil if number <= 0."
   (declare (type integer number limit))
 
   (unless (<= number 0)
@@ -101,17 +102,18 @@
       (if (= (mod i number) 0) (iterate::collect i)))))
 
 (defun primep (number &optional (test :fermat) (k 1))
-  "Check if NUMBER is prime.
- Args
-   NUMBER    - Positive integer to check if prime.
-   TEST      - Method of checking primality.
-     :fermat - Uses Fermat's equation.
-     :mr     - Uses Miller-Rabin
-   K         - Non-negative integer for accuracy testing.
- Return
-   t is prime; else nil.
- Error
-   simple-error if K <= 0."
+  "Check if number is prime.
+  
+   Parameters
+    number : int     : Non-negative integer
+    test   : keyword : Primality test
+                        :fermat - Uses Fermat's equation.
+                        :mr     - Uses Miller-Rabin
+    k      : int     : Non-negative - accuracy value
+   Return
+    t is prime; else nil.
+   Error
+    simple-error if K <= 0."
   (declare (type integer number k) (type keyword test))
 
   (when (<= k 0) (error "Invalid input k: ~S" k))
@@ -124,22 +126,20 @@
     (:mr (prime-miller-rabin number k))))
 
 (defun prime-miller-rabin (number &optional (k 1))
-  "Check if NUMBER is prime using Miller Rabin.
- Arg
-   NUMBER - Non-negative integer.
-   K - Accuracy for the test.
- Return
-   nil if invalid input or not prime.
-   t is prime.
- Error
-   simple-error if K <= 0."
+  "Check if number is prime using Miller Rabin.
+  
+   Parameters
+    number : int : Non-negative integer.
+    k      : int : Accuracy for the test.
+   Return
+    t is prime; else nil.   Error
+    simple-error if K <= 0."
   (declare (type integer number k))
-
+  
+  (when (<= k 0) (error "Invalid input k: ~S" k))
   (when (or (<= number 0) (and (> number 2) (evenp number)))
     (return-from prime-miller-rabin nil))
-  (when (<= k 0) (error "Invalid input k: ~S" k))
 
-  ;; Special case.
   ;; Number should be n > 3.
   (when (or (= number 2) (= number 3)) (return-from prime-miller-rabin t))
 
@@ -151,8 +151,8 @@
   (flet ((power-of-two (n)
            (iterate:iter
              (iterate:for x iterate::initially 1 iterate::then (1+ x))
-             (iterate:for v iterate::initially (/ n 2) iterate::then (/ v 2))
-             (iterate:while (and (integerp v) (evenp v))) ; n % 2 = 0
+             (iterate:for v iterate::initially (ash n -1) iterate::then (ash v -1))
+             (iterate:while (and (integerp v) (evenp v)))
              (iterate:finally (return (list x v))))))
     (let ((rd (power-of-two (1- number)))) ; n-1 := 2^r * d
       (iterate:iter
@@ -173,23 +173,26 @@
       t)))
 
 (defun prime-fermat (number &optional (k 1))
-  "Check if NUMBER is prime using Fermat's test.
- Args
-   NUMBER - Non-negative integer.
-        K - Confidence value.
- Return
-   nil if NUMBER <= 0.
-   t is NUMBER is probably prime; nil if not prime.
- Error
-   simple-error if K <= 0.
- Warn
-   simple-warn if NUMBER > 5 digits."
+  "Check if number is prime using Fermat's test.
+  
+   Parameters
+    number : int : Non-negative integer.
+    k      : int : Confidence value.
+   Return
+    t is number is probably prime; nil if not prime.
+    nil if number <= 0.
+   Error
+    simple-error if K <= 0.
+   Warn
+    simple-warn if number > 5 digits."
   (declare (type integer number k))
 
-  (when (<= k 0) (error "Invalid input k: ~S" k))
-
-  (when (or (<= number 0) (and (> number 2) (evenp number)))
-    (return-from prime-fermat nil))
+  (cond ((<= k 0) 
+         (error "Invalid input k: ~S" k))
+        ((or (<= number 0) (and (> number 2) (evenp number)))
+         (return-from prime-fermat nil))
+        ((or (= number 2) (= number 3)) 
+         (return-from prime-fermat t)))
 
   (let ((number-digits (digits number)))
     ;; Post-six digits, operations become highly inefficient.
@@ -204,11 +207,11 @@
 
 (defun sieve-of-erathosthenes (number)
   "Sieve of Erathosthenes algorithm.
- Args
-    NUMBER - Integer to perform the sieve with
- Return
-    If NUMBER is invalid then return nil;
-    An integer list of all the primes up to n."
+  
+   Parameters
+    number : int
+   Return
+    list; else nil if number is invalid "
   (declare (type integer number))
 
   (when (or (<= number 1)
@@ -231,13 +234,13 @@
 
 (defun sieve-of-sundaram (number)
   "Sieve of Sundaram algorithm.
- Generates all prime numbers below 2n+2.
+  
+   Generates all prime numbers below 2n+2.
 
- Args
-   NUMBER - Non-negative integer.
- Return
-   If NUMBER is invalid then return nil;
-   An integer list."
+   Parameters
+    number : int : Non-negative integer.
+   Return
+    list; nil if number is invalid."
   (declare (type integer number))
 
   (when (or (<= number 1) (>= number array-total-size-limit))
@@ -260,4 +263,4 @@
                         (iterate:while (< c index))
                         (when (= (bit primes c) 1)
                           ;; 2n+1; but, c(0..n] -> 2..n
-                          (iterate::collecting (1+ (* 2(+ c 2)))))))))
+                          (iterate::collecting (1+ (* 2 (+ c 2)))))))))

@@ -13,7 +13,3 @@
     ;; SoS calculates primes for 2n+2.
     ;; - n 3 because we want sum below n.
     (:sos (reduce #'+ (sieve-of-sundaram (- (/ upto-n 2) 3))))))
-
-(defun problem-ten-main ()
-  (format t "The sum of all primes below two million is ~S.~%"
-          (problem-ten 2000000 :sos)))

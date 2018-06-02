@@ -10,11 +10,12 @@
 (in-package #:project-euler)
 
 (defun reverse-integer (value)
-  "Reverse the integer VALUE.
- Args
-   VALUE - Integer
- Return
-   Integer"
+  "Reverse an integer.
+ 
+   Parameters
+    value : int 
+   Return 
+    int"
   (declare (type integer value))
 
   (let* ((flag (if (< value 0) t nil))
@@ -29,13 +30,15 @@
     (if flag (- res) res)))
 
 (defun palindrome-p (value)
-  "Check if VALUE is a palindrome.
- Assumption
-   VALUE is an integer with at least 3 digits.
- Args
-   VALUE - Integer to check if palindrome.
- Return
-   T is palindrome; otherwise, NIL."
+  "Check if integer is a palindrome.
+  
+   Assumption
+    value is an integer with at least 3 digits.
+   Parameters
+    value : int
+   Return
+    t if palindrome; 
+    otherwise, nil."
   (declare (type integer value))
 
   (let ((digits (1+ (log value 10))))
@@ -78,7 +81,3 @@
              (setf j (- j 1)))
             (t (decf i))))
       (iterate:finally (return result))))
-
-(defun problem-four-main ()
-  (format t "The largest palidrome made from the product of two 3-digit \
-numbere is ~S.~%" (problem-four)))

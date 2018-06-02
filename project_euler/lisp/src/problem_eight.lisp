@@ -33,11 +33,12 @@
 
 (defun integer-into-sequence (number)
   "Parse an integer into a sequence.
- Args
-   NUMBER - Nonnegative integer to parse.
- Return
-   A sequence of integers.
-   nil if NUMBER is negative."
+  
+   Parameters
+    number : int : Nonnegative integer to parse.
+   Return
+    A sequence of integers.
+    nil if number is negative."
   (declare (type integer number))
 
   (when (< number 0) (return-from integer-into-sequence nil))
@@ -65,6 +66,3 @@
       (setf max-value (max max-value (reduce #'* (subseq number i (+ i step)))))
       (incf i)
       (iterate::finally (return max-value)))))
-
-(defun problem-eight-main ()
-  (format t "The value of the product is ~S.~%" (problem-eight)))
