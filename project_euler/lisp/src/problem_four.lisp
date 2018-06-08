@@ -1,6 +1,6 @@
 ;;;; problem_four.lisp
 ;;;; Project Euler
-;;;; Problem 4
+;;;; Problem 4 - Largest palindrome product	
 ;;;;
 ;;;; A palindromic number reads the same both ways. The largest palindrome made
 ;;;; from both the product of two 2-digit numbers is 9009 = 91 x 99.
@@ -29,20 +29,16 @@
                 (iterate:finally (return result)))))
     (if flag (- res) res)))
 
-(defun palindrome-p (value)
+(defun palindromep (value)
   "Check if integer is a palindrome.
   
-   Assumption
-    value is an integer with at least 3 digits.
    Parameters
-    value : int
+    value : int : Should be at least 3 or more digits.
    Return
-    t if palindrome; 
-    otherwise, nil."
+    t if palindrome; otherwise, nil."
   (declare (type integer value))
-
   (let ((digits (1+ (log value 10))))
-    (when (<= digits 3) (return-from palindrome-p nil))
+    (when (<= digits 3) (return-from palindromep nil))
 
     (iterate:iter
       (iterate:with result = t)
@@ -65,7 +61,7 @@
     ;; Problem Four only cares about 3 digits.
     (iterate::while (and continue (> j 100)))
     (let ((mult (* i j)))
-      (when (palindrome-p mult)
+      (when (palindromep mult)
         (cond ((= i-saved 0)
                (setf i-saved i)
                (setf result (max result (* i j))))
@@ -76,8 +72,9 @@
 
       ;; Problem Four only cares about 3-digits.
       ;; When i reaches 99 then reset to one less than j then decrement j.
-      (cond ((< i 100)
+      (if (< i 100)
+          (progn 
              (setf i (- j 1))
              (setf j (- j 1)))
-            (t (decf i))))
-      (iterate:finally (return result))))
+          (decf i))
+      (iterate:finally (return result)))))

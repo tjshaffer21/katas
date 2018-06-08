@@ -1,6 +1,6 @@
 ;;;; problem_eight.lisp
 ;;;; Probject Euler
-;;;; Problem 8
+;;;; Problem 8 - Largest product in a series	
 ;;;;
 ;;;; The four adjacent digits in the 1000-digit number that have the greatest
 ;;;; product are 9 × 9 × 8 × 9 = 5832.
@@ -40,7 +40,6 @@
     A sequence of integers.
     nil if number is negative."
   (declare (type integer number))
-
   (when (< number 0) (return-from integer-into-sequence nil))
            
   (let* ((size (floor (1+ (log number 10))))
