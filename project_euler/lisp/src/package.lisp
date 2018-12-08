@@ -12,4 +12,6 @@
            :problem-eight
            :problem-nine
            :problem-ten
+           ;problem-eleven
+           :problem-twelve
            :problem-sixteen))

@@ -1,6 +1,6 @@
 ;;;; problem_six.lisp
 ;;;; Project Euler
-;;;; Problem 6 - Sum square difference	
+;;;; Problem 6 - Sum square difference
 ;;;;
 ;;;; The sum of the squares of the first ten natural numbers is,
 ;;;;   1^2 + 2^2 + ... + 10^2 = 385
@@ -15,11 +15,13 @@
 
 (defun sum-of-squares (number)
   "Calculate the sum of squares.
-  
-   Parameters
+
+  Parameters
     number : int : nth value to sum.
-   Return
-    int"
+  Return
+    int
+  Error
+    type-error : NUMBER is not an integer"
   (declare (type integer number))
   (iterate:iter
     (iterate:for i iterate::from 1 iterate::to number)
@@ -28,10 +30,12 @@
 (defun square-of-sum (number)
   "Square the sum.
 
-   Parameters
+  Parameters
     number : int : nth value to sum.
-   Return
-    int"
+  Return
+    int
+  Error
+    type-error : NUMBER is not an integer"
   (declare (type integer number))
   (expt (iterate:iter
          (iterate::for i iterate::from 1 iterate::to number)

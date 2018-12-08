@@ -1,6 +1,6 @@
 ;;;; problem_seven.lisp
 ;;;; Project Euler
-;;;; Problem 7 - 10001st prime	
+;;;; Problem 7 - 10001st prime
 ;;;;
 ;;;; By listing the first six prime numbers: 2, 3, 5, 7, 11, and 13, we can see
 ;;;; that the 6th prime is 13.
@@ -11,10 +11,8 @@
 
 (defun problem-seven (n)
   (iterate:iter
-    (iterate:with current = (* 2 n))
-    (iterate:with max = most-positive-fixnum)
-    (iterate:while (< current max))
-    (let ((sieve (sieve-of-erathosthenes current)))
-      (if (>= (length sieve) n)
-          (return-from problem-seven (nth (1- n) sieve))
-          (setf current (+ current n))))))
+    (iterate:for current iterate::first (* 2 n) iterate::then (+ current n))
+    (iterate:for sieve = (erathosthenes-sieve current))
+    (iterate:while (< current most-positive-fixnum))
+    (when (>= (length sieve) n)
+          (return-from problem-seven (nth (1- n) sieve)))))

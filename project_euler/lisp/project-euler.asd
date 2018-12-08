@@ -21,8 +21,9 @@
                (:file "src/problem_eight")
                (:file "src/problem_nine")
                (:file "src/problem_ten")
+               (:file "src/problem_twelve")
                (:file "src/problem_sixteen")))
-               
+
 (asdf:defsystem #:project-euler-tests
   :description "Project Euler problems."
   :author "Thomas Shaffer <tjshaffer21@gmail.com>"

@@ -9,10 +9,8 @@
 (in-package #:project-euler)
 
 (defun problem-sixteen (n)
-  (let ((power (expt 2 n)))
-    (iterate:iter 
-      (iterate:with digit = 0)
-      (iterate:for i iterate::initially 1 iterate::then (1+ i))
-      (iterate:while digit)
-      (setf digit (integer-at power i))
-      (unless (null digit) (iterate:sum digit)))))
+  (iterate:iter
+    (iterate:for i iterate::from 1)
+    (iterate:for digit iterate::first 0 iterate::then (integer-at (expt 2 n) (1- i)))
+    (iterate:while digit)
+    (unless (null digit) (iterate:sum digit))))
