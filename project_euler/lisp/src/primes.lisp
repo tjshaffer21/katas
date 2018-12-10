@@ -84,7 +84,7 @@
             ;; Case when mut-n is a prime.
             (when (not (= mut-n 1)) (list (list mut-n 1))))))
 
-(defun primep (n &optional (test :mr) (k 1))
+(defun primep (n &optional (test :mr) (k 128))
   "Prime test on given N.
 
   See
@@ -105,7 +105,7 @@
     (:fermat (prime-fermat n k))
     (:mr (prime-miller-rabin n k))))
 
-(defun prime-miller-rabin (n &optional (k 1))
+(defun prime-miller-rabin (n &optional (k 128))
   "Check if N is a prime using Miller-Rabin.
 
   Parameters

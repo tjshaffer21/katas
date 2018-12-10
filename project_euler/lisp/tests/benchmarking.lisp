@@ -2,44 +2,25 @@
 
 (defvar *timer* (benchmark:make-timer))
 
-(defun benchmark-digits (limit)
-  (benchmark:with-sampling (*timer*)
-    (dotimes (i limit t)
-      (project-euler::digits (+ 1 i)))))
-      
-(defun benchmark-even-sum-fib (term limit)
-  (benchmark:with-sampling (*timer*)
-    (dotimes (i limit t)
-      (project-euler::even-sum-fibonacci term))))  
-  
-(defun benchmark-recursive-fibonacci (term limit)
-  (benchmark:with-sampling (*timer*)
-    (dotimes (i limit t)
-      (project-euler::recursive-fibonacci term))))
-      
-(defun benchmark-dynamic-fibonacci(term limit)
-  (benchmark:with-sampling (*timer*)
-    (dotimes (i limit t)
-      (project-euler::dynamic-fibonacci term))))
+(defmacro do-benchmark-report (sample-size &rest body)
+  `(progn
+    (benchmark:reset *timer*)
+    (dotimes (i ,sample-size t)
+      (benchmark:with-sampling (*timer*)
+        ,@body))
+    (benchmark:report *timer*)))
 
-(defun benchmark-gcd-binary (limit)
-  (benchmark:with-sampling (*timer*)
-    (dotimes (i limit t)
-      (project-euler::greatest-common-divisor 100 1000 :binary))))
-  
-(defun benchmark-integer-at (limit)
-  (benchmark:with-sampling (*timer*)
-      (dotimes (i limit t)
-        (project-euler::integer-at most-positive-fixnum 10))))
-  
-(defun benchmark-prime-mr (limit)
-  (benchmark:with-sampling (*timer*)
-    (iterate:iter
-      (iterate:for i iterate::from 2 iterate::to limit)
-      (project-euler::prime-miller-rabin i))))
+(defun benchmark-prime-factors (sample-size n)
+  (do-benchmark-report sample-size (project-euler::prime-factors n)))
 
-(defun benchmark-prime-fermat (limit)
-  (benchmark:with-sampling (*timer*)
-    (iterate:iter
-      (iterate:for i iterate::from 2 iterate::to limit)
-      (project-euler::prime-fermat i))))
+(defun benchmark-prime-factors-list (sample-size n)
+  (do-benchmark-report sample-size (project-euler::prime-factors-list n)))
+
+(defun benchmark-prime-miller-rabin (sample-size n)
+  (do-benchmark-report sample-size (project-euler::prime-miller-rabin n)))
+
+(defun benchmark-sundaram (sample-size n)
+  (do-benchmark-report sample-size (project-euler::sundaram-sieve n)))
+
+(defun benchmark-gcd-binary (sample-size a b)
+  (do-benchmark-report sample-size (project-euler::gcd-binary a b)))

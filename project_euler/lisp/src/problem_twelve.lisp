@@ -1,7 +1,6 @@
 ;;;; problem_twelve.lisp
 ;;;; Project Euler
 ;;;; Problem 12: Highly divisible triangular number
-;;;;
 ;;;; Problem URL: https://projecteuler.net/problem=12
 ;;;;
 (in-package #:project-euler)
