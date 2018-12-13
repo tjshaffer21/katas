@@ -12,7 +12,7 @@
    Return
     int"
   (declare (type integer number)
-           (optimize (speed 3) (safety 0)))
+           (optimize (speed 3) (safety 3) (debug 0)))
   (if (= number 0) 1 (floor (1+ (log number 10)))))
 
 (defun greatest-common-divisor (a b &optional (method :binary))
@@ -43,7 +43,7 @@
   Error
     type-error : A, B are not integers."
   (declare (type integer a b)
-           (optimize (speed 3) (safety 0)))
+           (optimize (speed 3) (safety 3) (debug 0)))
 
   (when (or (<= a 0) (<= b 0)) (return-from gcd-binary nil))
   (let* ((an a) (bn b)
@@ -80,7 +80,7 @@
   Error
     type-error : VALUE, INDEX are not integers."
   (declare (type integer value index)
-           (optimize (speed 3) (safety 0)))
+           (optimize (speed 3) (safety 3) (debug 0)))
 
   (when (or (< value 0) (<= index 0) (> index (digits value)))
     (return-from integer-at nil))

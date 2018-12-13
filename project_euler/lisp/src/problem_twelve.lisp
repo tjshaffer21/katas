@@ -13,7 +13,7 @@
   Return
     integer"
   (declare (type (unsigned-by 32) x)
-           (optimize (speed 3) (safety 0)))
+           (optimize (speed 3) (safety 3) (debug 0)))
   (when (= x 1) (return-from count-divisors 1))
 
   (iterate:iter

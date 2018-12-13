@@ -17,7 +17,7 @@
   Error
     type-error : If N is not an integer"
   (declare (type integer n)
-           (optimize (speed 3) (safety 0)))
+           (optimize (speed 3) (safety 3) (debug 0)))
 
   (when (<= n 1) (return-from prime-factors nil))
   (let ((mut-n n))
@@ -47,7 +47,7 @@
   Error
     type-error : If N is not an integer."
   (declare (type integer n)
-           (optimize (speed 3) (safety 0)))
+           (optimize (speed 3) (safety 3) (debug 0)))
 
   (when (<= n 1) (return-from prime-factors-list nil))
   (let ((mut-n n))
@@ -118,7 +118,7 @@
   Warn
     if k < 1"
   (declare (type integer n k)
-           (optimize (speed 3) (safety 0)))
+           (optimize (speed 3) (safety 3) (debug 0)))
 
   (cond ((or (<= n 1) (and (> n 2) (evenp n)))
           (return-from prime-miller-rabin nil))
@@ -158,7 +158,7 @@
   Error
     type-error : N is not an integer."
   (declare (type integer n)
-           (optimize (speed 3) (safety 0)))
+           (optimize (speed 3) (safety 3) (debug 0)))
 
   (let ((adjust (floor (- n 2) 2)))
     (when (or (<= adjust 1) (>= adjust array-total-size-limit))
@@ -189,7 +189,7 @@
   NUMBER is probably a prime then T is returned else NIL. A SIMPLE-ERROR is
   returned if K <= 0, and a SIMPLE-WARN is called if NUMBER > 5."
   (declare (type integer number k)
-           (optimize (speed 3) (safety 0)))
+           (optimize (speed 3) (safety 3) (debug 0)))
 
   (cond ((<= k 0)
          (error "Invalid input k: ~S" k))
@@ -220,7 +220,7 @@
   Error
     type-error : NUMBER is not an integer."
   (declare (type integer number)
-           (optimize (speed 3) (safety 0)))
+           (optimize (speed 3) (safety 3) (debug 0)))
 
   (when (or (<= number 1) (>= number array-total-size-limit))
     (return-from erathosthenes-sieve nil))

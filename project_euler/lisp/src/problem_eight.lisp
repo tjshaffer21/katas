@@ -17,7 +17,7 @@
   Errors
     type-error : if NUMBER is not an integer."
   (declare (type integer number)
-           (optimize (speed 3) (safety 0)))
+           (optimize (speed 3) (safety 3) (debug 0)))
 
   (when (< number 0) (return-from integer-into-sequence nil))
 

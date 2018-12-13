@@ -15,7 +15,7 @@
   Error
     type-error : TERM must be an integer"
   (declare (type integer term)
-           (optimize (speed 3) (safety 0)))
+           (optimize (speed 3) (safety 3) (debug 0)))
 
   (when (< term 0) (return-from dynamic-fibonacci nil))
 
@@ -56,7 +56,7 @@
   Error
     type-error : N is not an integer"
   (declare (type integer n)
-           (optimize (speed 3) (safety 0)))
+           (optimize (speed 3) (safety 3) (debug 0)))
 
   (iterate:iter
     (iterate:for even-1 iterate::initially 0 iterate::then even-2)

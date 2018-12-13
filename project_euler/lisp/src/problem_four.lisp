@@ -15,7 +15,7 @@
   Error
     type-error : if N is not an integer."
   (declare (type integer n)
-           (optimize (speed 3) (safety 0)))
+           (optimize (speed 3) (safety 3) (debug 0)))
 
   (when (and (>= n -9) (<= n 9)) (return-from reverse-integer n))
   (labels ((nrev (x res)
@@ -37,7 +37,7 @@
   Errors
     type-error : if VALUE is not an integer."
   (declare (type integer value)
-           (optimize (speed 3) (safety 0)))
+           (optimize (speed 3) (safety 3) (debug 0)))
   (iterate:iter
     (iterate:with digits = (1+ (log value 10)))
     (iterate:with reversed = (reverse-integer value))

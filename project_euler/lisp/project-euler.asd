@@ -22,6 +22,7 @@
                (:file "src/problem_nine")
                (:file "src/problem_ten")
                (:file "src/problem_twelve")
+               (:file "src/problem_fourteen")
                (:file "src/problem_sixteen")))
 
 (asdf:defsystem #:project-euler-tests

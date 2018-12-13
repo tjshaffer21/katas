@@ -58,7 +58,7 @@
   Error
     type-error : LIMIT is not an integer"
   (declare (type integer limit)
-           (optimize (speed 3) (safety 0)))
+           (optimize (speed 3) (safety 3) (debug 0)))
 
   (when (<= limit 0) (return-from generate-coprimes nil))
   (let ((coprimes (make-array (+ limit 2))) (m 2) (n 1))

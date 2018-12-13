@@ -108,6 +108,31 @@
   (lisp-unit:assert-equal (list 4 6 8) (project-euler::multiples 2 8))
   (lisp-unit:assert-equal (list 6 9 12 15 18) (project-euler::multiples 3 20)))
 
+(lisp-unit:define-test test-ncollatz-length
+  (let ((cache (make-hash-table)))
+    (lisp-unit:assert-equal 1 (project-euler::ncollatz-length 1 cache))
+    (lisp-unit:assert-equal 2 (project-euler::ncollatz-length 2 cache))
+    (lisp-unit:assert-equal 3 (project-euler::ncollatz-length 4 cache))
+    (lisp-unit:assert-equal 4 (project-euler::ncollatz-length 8 cache))
+    (lisp-unit:assert-equal 5 (project-euler::ncollatz-length 16 cache))
+    (lisp-unit:assert-equal 6 (project-euler::ncollatz-length 5 cache))
+    (lisp-unit:assert-equal 7 (project-euler::ncollatz-length 10 cache))
+    (lisp-unit:assert-equal 8 (project-euler::ncollatz-length 20 cache))
+    (lisp-unit:assert-equal 9 (project-euler::ncollatz-length 40 cache))
+    (lisp-unit:assert-equal 10 (project-euler::ncollatz-length 13 cache))))
+
+(lisp-unit:define-test test-next-collatz-term
+  (lisp-unit:assert-equal 1 (project-euler::next-collatz-term 1))
+  (lisp-unit:assert-equal 1 (project-euler::next-collatz-term 2))
+  (lisp-unit:assert-equal 2 (project-euler::next-collatz-term 4))
+  (lisp-unit:assert-equal 4 (project-euler::next-collatz-term 8))
+  (lisp-unit:assert-equal 8 (project-euler::next-collatz-term 16))
+  (lisp-unit:assert-equal 16 (project-euler::next-collatz-term 5))
+  (lisp-unit:assert-equal 5 (project-euler::next-collatz-term 10))
+  (lisp-unit:assert-equal 10 (project-euler::next-collatz-term 20))
+  (lisp-unit:assert-equal 20 (project-euler::next-collatz-term 40))
+  (lisp-unit:assert-equal 40 (project-euler::next-collatz-term 13)))
+
 (lisp-unit:define-test test-palindromep
   (:tag :aux)
   (lisp-unit:assert-error 'type-error (project-euler::palindromep #\A))
@@ -318,6 +343,10 @@
   (:tag :prime)
   (lisp-unit:assert-equal 28 (project-euler::problem-twelve 6))
   (lisp-unit:assert-equal 76576500 (project-euler::problem-twelve 500)))
+
+(lisp-unit:define-test test-problem-fourteen
+  (:tag :prime)
+  (lisp-unit:assert-equal 837799 (project-euler::problem-fourteen 1000000)))
 
 (lisp-unit:define-test test-problem-sixteen
   (:tag :prime)

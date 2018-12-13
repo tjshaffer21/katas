@@ -16,7 +16,7 @@
   Error
     type-error : if N is not a list, and LIMIT is not an integer."
   (declare (type list n) (type integer limit)
-           (optimize (speed 3) (safety 0)))
+           (optimize (speed 3) (safety 3) (debug 0)))
   (unless (null n)
     (append (iterate:iter
               (iterate:for i iterate::from (first n) iterate::below limit)
@@ -37,7 +37,7 @@
    Return
     list"
   (declare (type integer value)
-           (optimize (speed 3) (safety 0)))
+           (optimize (speed 3) (safety 3) (debug 0)))
 
   (remove-if #'(lambda (x) (if (> (length (multiples-below (list x) (1+ value))) 1)
                                t
