@@ -86,6 +86,34 @@
     (return-from integer-at nil))
   (floor (mod (/ value (expt 10 (1- index))) 10)))
 
+
+(defun integer-into-sequence (number)
+  "Parse an integer into a sequence.
+
+  Parameters
+    number : int : NUMBER >= 0
+  Return
+    A sequence of integers.
+    nil if NUMBER is negative.
+  Errors
+    type-error : if NUMBER is not an integer."
+  (declare (type integer number)
+           (optimize (speed 3) (safety 3) (debug 0)))
+
+  (when (< number 0) (return-from integer-into-sequence nil))
+
+  (let* ((size (floor (1+ (log number 10))))
+         (integers (make-array size)))
+    (when (= size 1)
+      (return-from integer-into-sequence
+        (make-array 1 :initial-element number :element-type 'integer)))
+
+    (iterate:iter
+      (iterate:for j iterate::from 0)
+      (iterate:for i iterate::from (1- size) iterate::downto 0)
+      (setf (aref integers j) (integer-at number (1+ i))))
+    integers))
+
 (defun multiples (number limit)
   "Get the multiples of the given number up to, and including, limit.
 
