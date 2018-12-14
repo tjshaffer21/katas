@@ -1,0 +1,12 @@
+[package]
+name = "project_euler"
+version = "1.0.0"
+authors = ["Thomas Shaffer <tjshaffer21@gmail.com>"]
+
+[[bin]]
+name = "p1"
+path = "src/p1.rs"
+
+[[bin]]
+name = "p2"
+path = "src/p2.rs"

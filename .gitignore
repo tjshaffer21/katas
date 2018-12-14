@@ -1,2 +1,6 @@
+Cargo.lock
 *.pyc
+katas.code-workspace
 system-index.txt
+
+project_euler/rust/target/
