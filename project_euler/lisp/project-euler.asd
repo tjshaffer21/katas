@@ -6,24 +6,17 @@
   :license ""
   :serial t
   :depends-on (:cl-utilities
-               :iterate)
+               :iterate
+               :smath)
   :components ((:file "src/package")
-               (:file "src/common_functions")
                (:file "src/primes")
-               (:file "src/fibonacci")
-               (:file "src/problem_one")
-               (:file "src/problem_two")
-               (:file "src/problem_three")
+               (:file "src/problems")
                (:file "src/problem_four")
                (:file "src/problem_five")
                (:file "src/problem_six")
-               (:file "src/problem_seven")
-               (:file "src/problem_eight")
                (:file "src/problem_nine")
-               (:file "src/problem_ten")
                (:file "src/problem_twelve")
-               (:file "src/problem_fourteen")
-               (:file "src/problem_sixteen")))
+               (:file "src/problem_fourteen")))
 
 (asdf:defsystem #:project-euler-tests
   :description "Project Euler problems."

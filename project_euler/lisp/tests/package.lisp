@@ -9,7 +9,6 @@
     (:export :do-benchmark-report
              :benchmark-prime-factors
              :benchmark-prime-factors-list
-             :benchmark-prime-miller-rabin
              :benchmark-sundaram
              :benchmark-gcd-binary
              :benchmark-generate-coprimes))

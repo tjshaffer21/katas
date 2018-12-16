@@ -8,60 +8,6 @@
   (lisp-unit:assert-equal 2640 (- (project-euler::square-of-sum 10)
                                   (project-euler::sum-of-squares 10))))
 
-(lisp-unit:define-test test-digits
-  (:tag :aux)
-  (lisp-unit:assert-error 'type-error (project-euler::digits #\A))
-
-  (lisp-unit:assert-eql 1 (project-euler::digits 0))
-  (lisp-unit:assert-eql 1 (project-euler::digits 1))
-  (lisp-unit:assert-eql 4 (project-euler::digits 1234)))
-
-(lisp-unit:define-test test-even-sum-fibonacci
-  (:tag :aux)
-  (lisp-unit:assert-error 'type-error (project-euler::even-sum-fibonacci #\A))
-
-  (lisp-unit:assert-eql 188 (project-euler::even-sum-fibonacci 400)))
-
-(lisp-unit:define-test test-fibonacci
-  (:tag :aux)
-  (lisp-unit:assert-error 'type-error (project-euler::recursive-fibonacci #\A))
-  (lisp-unit:assert-error 'simple-error (project-euler::recursive-fibonacci -2))
-
-  (lisp-unit:assert-equal 55 (project-euler::recursive-fibonacci 10))
-  (lisp-unit:assert-equal 0 (project-euler::recursive-fibonacci 0))
-  (lisp-unit:assert-equal 1 (project-euler::recursive-fibonacci 1))
-  (lisp-unit:assert-equal 8 (project-euler::recursive-fibonacci 6)))
-
-(lisp-unit:define-test test-fibonacci-dynamic
-  (:tag :aux)
-  (lisp-unit:assert-error 'type-error (project-euler::dynamic-fibonacci #\A))
-  (lisp-unit:assert-equal nil (project-euler::dynamic-fibonacci -1))
-
-  (lisp-unit:assert-equal 55 (aref (project-euler::dynamic-fibonacci 10) 10))
-  (lisp-unit:assert-equal 0 (aref (project-euler::dynamic-fibonacci 0) 0))
-  (lisp-unit:assert-equal 1 (aref (project-euler::dynamic-fibonacci 1) 1))
-  (lisp-unit:assert-equal 8 (aref (project-euler::dynamic-fibonacci 6) 6)))
-
-(lisp-unit:define-test test-gcd
-  (:tag :aux)
-  (lisp-unit:assert-error 'type-error
-    (project-euler::greatest-common-divisor #\A 2 :binary))
-  (lisp-unit:assert-error 'type-error
-    (project-euler::greatest-common-divisor 2 #\B :binary))
-
-  (lisp-unit:assert-false (project-euler::greatest-common-divisor -1 2))
-  (lisp-unit:assert-false (project-euler::greatest-common-divisor 2 0)))
-
-(lisp-unit:define-test test-gcd-binary
-  (:tag :aux)
-  (lisp-unit:assert-error 'type-error (project-euler::gcd-binary #\A 2))
-  (lisp-unit:assert-error 'type-error (project-euler::gcd-binary 2 #\B))
-
-  (lisp-unit:assert-false (project-euler::gcd-binary 0 5))
-  (lisp-unit:assert-false (project-euler::gcd-binary 2 -5))
-
-  (lisp-unit:assert-eql 6 (project-euler::gcd-binary 12 6)))
-
 (lisp-unit:define-test test-generate-pythagorean-triple
   (:tag :aux)
   (lisp-unit:assert-error 'type-error
@@ -73,40 +19,6 @@
     (project-euler::generate-pythagorean-triple 0 3 :euclid))
   (lisp-unit:assert-false
     (project-euler::generate-pythagorean-triple 4 0 :euclid)))
-
-(lisp-unit:define-test test-integer-at
-  (:tag :aux)
-  (lisp-unit:assert-error 'type-error (project-euler::integer-at 123 #\C))
-  (lisp-unit:assert-error 'type-error (project-euler::integer-at #\D 1))
-
-  (lisp-unit:assert-eql 4 (project-euler::integer-at 1234 1))
-  (lisp-unit:assert-eq 1 (project-euler::integer-at 1234 4))
-  (lisp-unit:assert-equal 1 (project-euler::integer-at 1234 4))
-  (lisp-unit:assert-equal 4 (project-euler::integer-at 1234 1))
-  (lisp-unit:assert-equal nil (project-euler::integer-at 1234 0))
-  (lisp-unit:assert-equal nil (project-euler::integer-at 1234 5))
-  (lisp-unit:assert-equal nil (project-euler::integer-at -1234 4)))
-
-(lisp-unit:define-test test-integer-into-sequence
-  (:tag :aux)
-  (lisp-unit:assert-error 'type-error (project-euler::integer-into-sequence #\A))
-
-  (lisp-unit:assert-false (project-euler::integer-into-sequence -1))
-
-  (lisp-unit:assert-equalp #(3) (project-euler::integer-into-sequence 3))
-  (lisp-unit:assert-equalp #(3 2 1) (project-euler::integer-into-sequence 321))
-  (lisp-unit:assert-equalp #(1 2 3 4 5 6 7 8 9 0)
-                           (project-euler::integer-into-sequence 1234567890)))
-
-(lisp-unit:define-test test-multiples
-  (:tag :aux)
-  (lisp-unit:assert-error 'type-error (project-euler::multiples #\A 1))
-  (lisp-unit:assert-error 'type-error (project-euler::multiples 1 #\A))
-
-  (lisp-unit:assert-false (project-euler::multiples -1 5))
-
-  (lisp-unit:assert-equal (list 4 6 8) (project-euler::multiples 2 8))
-  (lisp-unit:assert-equal (list 6 9 12 15 18) (project-euler::multiples 3 20)))
 
 (lisp-unit:define-test test-ncollatz-length
   (let ((cache (make-hash-table)))
@@ -172,46 +84,6 @@
   (lisp-unit:assert-equal (list (list 2 5) (list 3 1))
     (project-euler::prime-factors-list 96)))
 
-(lisp-unit:define-test test-primep
-  (:tag :aux)
-  (lisp-unit:assert-error 'type-error (project-euler::primep 234 :fermat #\C))
-  (lisp-unit:assert-error 'type-error (project-euler::primep #\A :fermat 34))
-  (lisp-unit:assert-error 'simple-error (project-euler::primep 3 :fermat -1))
-
-  (lisp-unit:assert-false (project-euler::primep -1 :fermat 3))
-  (lisp-unit:assert-false (project-euler::primep 4 :fermat 1))
-  (lisp-unit:assert-false (project-euler::primep 14))
-  (lisp-unit:assert-false (project-euler::primep -1))
-
-  (lisp-unit:assert-true (project-euler::primep 2))
-  (lisp-unit:assert-true (project-euler::primep 13)))
-
-(lisp-unit:define-test test-prime-mr
-  (:tag :aux)
-  (lisp-unit:assert-error 'type-error (project-euler::prime-miller-rabin #\A))
-
-  (lisp-unit:assert-false (project-euler::prime-miller-rabin -1 128))
-  (lisp-unit:assert-false (project-euler::prime-miller-rabin 90 128))
-  (lisp-unit:assert-false (project-euler::prime-miller-rabin 15 128))
-
-  (lisp-unit:assert-true (project-euler::prime-miller-rabin 2 128))
-  (lisp-unit:assert-true (project-euler::prime-miller-rabin 3 128))
-  (lisp-unit:assert-true (project-euler::prime-miller-rabin 5 128))
-  (lisp-unit:assert-true (project-euler::prime-miller-rabin 7 128))
-  (lisp-unit:assert-true (project-euler::prime-miller-rabin 11 128))
-  (lisp-unit:assert-true (project-euler::prime-miller-rabin 13 128))
-  (lisp-unit:assert-true (project-euler::prime-miller-rabin 23 128))
-  (lisp-unit:assert-true (project-euler::prime-miller-rabin 269 128))
-  (lisp-unit:assert-true (project-euler::prime-miller-rabin 331 128))
-  (lisp-unit:assert-true (project-euler::prime-miller-rabin 1877 128))
-  (lisp-unit:assert-true (project-euler::prime-miller-rabin 2729 128))
-  (lisp-unit:assert-true (project-euler::prime-miller-rabin 104729 128))
-
-  ; Carmichael numbers
-  (lisp-unit:assert-false (project-euler::prime-miller-rabin 561 128))
-  (lisp-unit:assert-false (project-euler::prime-miller-rabin 41041 128))
-  (lisp-unit:assert-false (project-euler::prime-miller-rabin 340561 128)))
-
 (lisp-unit:define-test test-prime-fermat
   (:tag :aux)
   (lisp-unit:assert-error 'type-error (project-euler::prime-fermat #\A))
@@ -246,39 +118,6 @@
   (lisp-unit:assert-true (project-euler::pythagorean-triplet-p 3 4 5))
   (lisp-unit:assert-true (project-euler::pythagorean-triplet-p 13 84 85))
   (lisp-unit:assert-true (project-euler::pythagorean-triplet-p 160 231 281)))
-
-(lisp-unit:define-test test-reverse-integer
-  (:tag :aux)
-  (lisp-unit:assert-error 'type-error (project-euler::reverse-integer #\A))
-
-  (lisp-unit:assert-equal 987654321 (project-euler::reverse-integer 123456789))
-  (lisp-unit:assert-equal 32 (project-euler::reverse-integer 23))
-  (lisp-unit:assert-equal -32 (project-euler::reverse-integer -23))
-  (lisp-unit:assert-equal 231 (project-euler::reverse-integer 132)))
-
-(lisp-unit:define-test test-sieve-of-erathosthenes
-  (:tag :aux)
-  (lisp-unit:assert-error 'type-error (project-euler::erathosthenes-sieve #\A))
-
-  (lisp-unit:assert-false (project-euler::erathosthenes-sieve -1))
-  (lisp-unit:assert-false (project-euler::erathosthenes-sieve
-                            array-total-size-limit))
-
-  (lisp-unit:assert-equal (list 2 3 5 7) (project-euler::erathosthenes-sieve 8))
-  (lisp-unit:assert-equal (list 2 3 5 7 11 13 17 19)
-    (project-euler::erathosthenes-sieve 20)))
-
-(lisp-unit:define-test test-sieve-of-sundaram
-  (:tag :aux)
-  (lisp-unit:assert-error 'type-error (project-euler::sundaram-sieve #\A))
-
-  (lisp-unit:assert-false (project-euler::sundaram-sieve -1))
-  (lisp-unit:assert-false
-    (project-euler::sundaram-sieve (* (+ array-total-size-limit 2) 2)))
-
-  (lisp-unit:assert-equal '(2 3 5 7 11 13 17) (project-euler::sundaram-sieve 17))
-  (lisp-unit:assert-equal (list 2 3 5 7 11 13 17 19)
-    (project-euler::sundaram-sieve 20)))
 
 (lisp-unit:define-test test-square-of-sums
   (:tag :aux)
@@ -352,6 +191,11 @@
   (:tag :prime)
   (lisp-unit:assert-eq 26 (project-euler:problem-sixteen 15))
   (lisp-unit:assert-eq 1366 (project-euler:problem-sixteen 1000)))
+
+(lisp-unit:define-test test-problem-twenty-five
+  (:tag :prime)
+  (lisp-unit:assert-eq 12 (project-euler:problem-twenty-five 3))
+  (lisp-unit:assert-eq 4782 (project-euler:problem-twenty-five 1000)))
 
 (defun run-tests ()
   (lisp-unit:run-tests :all 'project-euler.tests))

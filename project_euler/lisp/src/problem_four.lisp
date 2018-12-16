@@ -5,28 +5,6 @@
 ;;;;
 (in-package #:project-euler)
 
-(defun reverse-integer (n)
-  "Reverse the integer N.
-
-  Parameters
-    n : integer
-  Return
-    integer
-  Error
-    type-error : if N is not an integer."
-  (declare (type integer n)
-           (optimize (speed 3) (safety 3) (debug 0)))
-
-  (when (and (>= n -9) (<= n 9)) (return-from reverse-integer n))
-  (labels ((nrev (x res)
-            (if (= x 0)
-                res
-                (multiple-value-bind (m n)
-                  (floor x 10)
-                  (nrev m (+ (* res 10) n))))))
-    (let ((result (nrev (abs n) 0)))
-      (if (< n 0) (- result) result))))
-
 (defun palindromep (value)
   "Check if integer VALUe is a palindrome.
 
@@ -40,10 +18,10 @@
            (optimize (speed 3) (safety 3) (debug 0)))
   (iterate:iter
     (iterate:with digits = (1+ (log value 10)))
-    (iterate:with reversed = (reverse-integer value))
+    (iterate:with reversed = (smath:reverse-integer value))
     (iterate:for i iterate::from 1 iterate::to digits)
     (iterate:if-first-time (when (< digits 3) (iterate:leave)))
-    (iterate:always (= (integer-at value i) (integer-at reversed i)))))
+    (iterate:always (= (smath:integer-at value i) (smath:integer-at reversed i)))))
 
 (defun problem-four ()
   (iterate:iter

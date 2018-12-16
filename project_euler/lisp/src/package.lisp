@@ -14,4 +14,5 @@
            :problem-ten
            ;problem-eleven
            :problem-twelve
-           :problem-sixteen))
+           :problem-sixteen
+           :problem-twenty-five))
