@@ -1,3 +1,7 @@
+*.exe
+*.hi
+*.o
+
 Cargo.lock
 *.pyc
 katas.code-workspace

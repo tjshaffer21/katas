@@ -1,9 +1,5 @@
-{-
- - Project Euler
- - Problem 3
- - The prime factors of 13195 are 5,7,13,29.
- - What is the largest prime factor of the number 600851475143?
- -}
+-- Project Euler
+-- Problem 3
 import System (getArgs)
 
 --  Sieve of Eratosthenes
@@ -28,9 +24,9 @@ trialDiv :: Int -> [Int]
 trialDiv n
     | n < 1     = []
     | n == 1    = [1]
-    | otherwise = 
+    | otherwise =
         let xs = trialDiv' (sieveE . ceiling $ (fromIntegral n ** 0.5)) n
-        in let ys = [x | x <- xs, x /= n] 
+        in let ys = [x | x <- xs, x /= n]
         in if length ys > 1 then ys else [1,n]
 
 -- Recurse through list of primes
@@ -40,7 +36,7 @@ trialDiv' (x:xs) n
     | x*x > n      = []
     | otherwise    = let ys = factor n x
                          zs = trialDiv' xs (last ys)
-                     in if length zs > 1 then (init ys) ++ zs else ys 
+                     in if length zs > 1 then (init ys) ++ zs else ys
 
 -- Check if p is factor of n
 factor :: Int -> Int -> [Int]
