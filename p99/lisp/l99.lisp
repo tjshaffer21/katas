@@ -15,6 +15,22 @@
         (t (append (reverse-list (rest list))
                    (funcall #'list (first list))))))
 
+(defun rotate (list n)
+  "Rotate LIST by N elements in given DIRECTION."
+  (destructuring-bind (left right) (split-list list (if (plusp n)
+                                                        n
+                                                        (+ (length list) n)))
+    (append right left)))
+
+(defun split-list (list n)
+  "Split a list into two parts; the length of the first part is given. N starts
+ at 1."
+  (loop for value in list
+        for at from 1
+        if (<= at n) collect value into left
+        else collect value into right
+        finally (return (funcall 'list left right))))
+
 (defun p01 (n)
   "Find the last element of a list N."
   (if (null (rest n))
@@ -75,21 +91,41 @@
                               (rec-list (rest lst) (list (first lst))))))))
     (rec-list n nil)))
 
-;; TODO
-(defun p10 ()
-  "Run-length encoding of a list")
+(defun p10 (list)
+  "Run-length encoding of a list"
+  (loop for value in (p09 list)
+        collect (list (length value) (first value))))
 
-;; TODO
-(defun p11 ()
-  "Modified run-length encoding")
+(defun p11 (list)
+  "Modified run-length encoding"
+  (loop for value in (p09 list)
+        for ele = (list (length value) (first value))
+        if (= (first ele) 1) collect (first (last ele)) else collect ele))
 
-;; TODO
-(defun p12 ()
-  "Decode a run-legnth encoded list.")
+(defun p12 (list)
+  "Decode a run-length encoded list."
+  (cond ((null list) '())
+        (t (if (atom (first list))
+               (append (funcall 'list (first list)) (p12 (rest list)))
+               (append (loop for x from (first (first list)) downto 1
+                       while (>= x 0) collect (first (last (first list))))
+                       (p12 (rest list)))))))
 
-;; TODO
-(defun p13 ()
-  "Run-legnth encoding of a list (direct solution).")
+(defun p13 (list)
+  "Run-length encoding of a list (direct solution)."
+  (let ((counter 1))
+    (loop for ele in list
+          for prev = curr
+          for curr = ele
+          if (equal prev curr)
+              do (incf counter)
+          else
+              collect (list counter prev) into results and
+              do (setf counter 1)
+          end
+          finally
+            ;; Need to remove NIL and include final element(s).
+            (return (append (rest results) (list (list counter curr)))))))
 
 (defun p14 (n)
   "Duplicate the elements of a list."
@@ -118,11 +154,7 @@
   "Split a list into two parts; the length of the first part is given.
  N starts at 1. So (p17 (list 1 2 3 4) 0) := (1 2 3 4) while (p17 (list 1 2 3 4)
  1) := ((1) (2 3 4))."
-  (let ((split-list (loop for value in lst
-                          for at from 1
-                          if (<= at n) collect value into left
-                          else collect value into right
-                          finally (return (list left right)))))
+  (let ((split-list (funcall 'split-list lst n)))
     (cond ((null (first split-list)) (first (last split-list)))
           ((null (first (last split-list))) (first split-list))
           (t split-list))))
@@ -134,29 +166,45 @@
         when (and (>= count start) (<= count end))
         collect value))
 
-;; TODO
 (defun p19 (lst n)
-  "Rotate a list N places to the left.")
+  "Rotate a list N places to the left."
+  (labels ((rec-list (lst n stack)
+            (cond ((null lst) stack)
+                  ((= n 1) (append (rest lst) stack (list (first lst))))
+                  (t (rec-list (rest lst)
+                               (1- n)
+                               (append stack (list (first lst))))))))
+    (rec-list lst (if (>= n 0) n (+ (length lst) n)) '())))
 
-;; TODO
 (defun p20 (lst k)
-  "Remove the K'th element from a list.")
+  "Remove the K'th element from a list."
+  (cond ((null lst) '())
+        ((= k 1) (rest lst))
+        (t (append (list (first lst)) (p20 (rest lst) (1- k))))))
 
-;; TODO
 (defun p21 (lst n ele)
-  "Insert an ELE at a given N position into a list LST.")
+  "Insert an ELE at a given N position into a list LST. N starts at 1."
+  (cond ((null lst) '())
+        ((= n 1) (append (list ele)
+                         (list (first lst))
+                         (rest lst)))
+        (t (append (list (first lst))
+                   (p21 (rest lst) (1- n) ele)))))
 
-;; TODO
 (defun p22 (range)
-  "Create a list containing all integers within a given range.")
+  "Create a list containing all integers within a given range."
+  (loop for x from (first range)
+        while (<= x (first (last range)))
+        collect x))
 
-;; TODO
 (defun p23 (lst n)
-  "Extract a given number of randomly selected elements from a list.")
+  "Extract a given number of randomly selected elements from a list."
+  (let ((l (length lst)))
+    (loop for x from 0 below n collect (nth (random l) lst))))
 
-;; TODO
 (defun p24 (m n)
-  "Lotto: Draw N different random numbers from the set 1..M")
+  "Lotto: Draw N different random numbers from the set 1..M"
+  (loop for x from 0 below n collect (1+ (random m))))
 
 ;; TODO
 (defun p25 ()
@@ -164,8 +212,8 @@
 
 ;; TODO
 (defun p26 ()
-  "Generate the combiations of K distinct objects chosen from the N elements of a
- list.")
+  "Generate the combiations of K distinct objects chosen from the N elements of
+ a list.")
 
 ;; TODO
 (defun p27 ()
